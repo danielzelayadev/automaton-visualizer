@@ -4,12 +4,19 @@
 	<head>
 		<meta charset="utf-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
-		<title>JointJS</title>
+		<title>Automatas</title>
+		<script src="./node_modules/vis/dist/vis.js"></script>
+		<link rel="stylesheet" href="./node_modules/vis/dist/vis.css" />
+		<style>
+			#app {
+				width: 600px;
+				height: 400px;
+				border: 1px solid lightgray;
+			}
+		</style>
 	</head>
 	<body>
-		<div id="paper"></div>
-		<button id="new-state">Nuevo Estado</button>
-		<button id="new-link">Nueva Arista</button>
+		<div id="app"></div>
 		<script src="bundle.js"></script>
 	</body>
 </html>
