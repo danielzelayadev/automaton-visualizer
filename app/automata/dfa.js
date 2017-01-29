@@ -4,9 +4,7 @@ import { UnknownCharError, UnknownStateError, DeterminismError } from '../errors
 export default class DFA extends Automata {
 	constructor(name, alphabet) { super(name, alphabet) }
 	addState (name, isFinal) {
-		const state = new State(name)
-		state.isFinal = isFinal
-		this.states.push(state)
+		this.states.push(new State(name, isFinal))
 	}
 	setInitialState(name) {
 		this.states = this.states.map(e => {
@@ -64,6 +62,12 @@ export default class DFA extends Automata {
 	transitionIsDeterministic(from, a) {
 		return !from.transitions.filter(e => e.a === a)[0]
 	}
+	getState (name) {
+		return this.states.filter(e => e.name === name)[0]
+	}
+	editState (_name, { name, isFinal }) {
+		this.states = this.states.map(e => e.name === _name ? new State(name, isFinal) : e)
+	} 
 	run (w) {
 		let currState = this.states.filter(e => e.isInitial)[0]
 

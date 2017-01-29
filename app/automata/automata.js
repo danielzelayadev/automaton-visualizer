@@ -14,8 +14,9 @@ export class State {
 	isInitial   = false
 	isFinal     = false
 	transitions = []
-	constructor (name) {
-		this.name = name
+	constructor (name, isFinal) {
+		this.name    = name
+		this.isFinal = isFinal
 	}
 }
 
