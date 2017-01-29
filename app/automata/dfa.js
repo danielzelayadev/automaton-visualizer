@@ -87,6 +87,9 @@ export default class DFA extends Automata {
 			return e
 		})
 	}
+	clear () {
+		this.states = []
+	}
 	run (w) {
 		let currState = this.states.filter(e => e.isInitial)[0]
 

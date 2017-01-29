@@ -13,6 +13,13 @@ $('#run-btn').click(e => {
 })
 
 export default function ({ nodes, edges }) {
+    $('#clear-btn').click(e => {
+        nodes.clear()
+        edges.clear()
+        dfa.clear()
+        console.log(dfa)
+    })
+
     return {
         edges: {
             arrows: {
