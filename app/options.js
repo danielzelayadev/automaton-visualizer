@@ -49,7 +49,42 @@ export default function ({ nodes, edges }) {
                 })
             },
             editNode: (nodeData, cb) => {
-                cb(nodeData)
+                modal.load('./app/modals/state.html', () => {
+                    const snTb    = $('#state-name')
+                    const finalCb = $('#is-final')
+                    const initCb  = $('#make-initial')
+                    const state   = dfa.getState(nodeData.label)
+
+                    snTb.focus()
+
+                    snTb.val(nodeData.label)
+                    finalCb.attr('checked', state.isFinal)
+                    initCb.attr('checked', state.isInitial)
+
+                    modal.modal('show')
+                    $('#modal-accept').click(e => {
+                        try {
+                            const name        = snTb.val()
+                            const isFinal     = finalCb.is(":checked")
+                            const makeInitial = initCb.is(":checked")
+
+                            dfa.editState(nodeData.label, { name, isFinal })
+
+                            if (makeInitial)
+                                dfa.setInitialState(name)
+
+                            nodeData.label = name
+                            cb(nodeData)
+                        } catch (e) {
+                            alert(e.message)
+                        } finally {
+                            modal.modal('hide')
+                            console.log(dfa)
+                        }
+                    })
+                    
+                    modal.on('hide.bs.modal', e => cb(null))
+                })
             },
             deleteNode: (nodeData, cb) => {
                 cb(nodeData)
