@@ -48,14 +48,19 @@ export default class DFA extends Automata {
 			return e
 		})
 	}
-	editTransition (from, to, a) {
+	editTransition (_from, a, { from, to }) {
 		this.states = this.states.map(e => {
-			if (e.name === from)
-				e.transitions = e.transitions.map(t => {
-					if (t.a === a)
-						t.to = to
-					return t
-				})
+			if (e.name === _from)
+				if (e.name !== from)
+					e.transitions = e.transitions.filter(t => t.a !== a)
+				else
+					e.transitions = e.transitions.map(t => { 
+						if (t.a === a) 
+							t.to = to 
+						return t
+					})
+			else if (e.name === from)
+				this.addTransition(e.name, a, to)	
 			return e
 		})
 	}

@@ -102,6 +102,12 @@ export default function ({ nodes, edges }) {
                     const from = nodes.get(nodeData.from).label
                     const to   = nodes.get(nodeData.to).label
                     const a    = prompt('Enter transition input', "")
+
+                    if (!a) {
+                        cb(null)
+                        return
+                    }
+
                     dfa.addTransition(from, a, to)
                     nodeData.label = a
                     cb(nodeData)
@@ -110,10 +116,28 @@ export default function ({ nodes, edges }) {
                 }
             },
             editEdge: (nodeData, cb) => {
-                cb(nodeData)
+                const from = nodes.get(nodeData.from).label
+                const to   = nodes.get(nodeData.to).label
+                const original = edges.get(nodeData.id)
+                const o_from = nodes.get(original.from).label
+                try {
+                    dfa.editTransition(o_from, nodeData.label, { from, to })
+                    cb(nodeData)
+                } catch (e) {
+                    alert(e.message)
+                    cb(null)
+                }
+                console.log(dfa.states)
             },
             deleteEdge: (nodeData, cb) => {
-                cb(nodeData)
+                if (confirm('Are you sure you want to delete this edge?')) {
+                    const edge = edges.get(nodeData.edges[0])
+                    const from = nodes.get(edge.from).label
+                    dfa.removeTransition(from, edge.label)
+                    cb(nodeData)
+                } else
+                    cb(null)
+                console.log(dfa.states)
             }
         }
     }
