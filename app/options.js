@@ -2,7 +2,12 @@ import $ from 'jquery'
 import DFA from './automata/dfa'
 
 const modal = $('#mdl')
-let dfa
+let dfa, initId
+
+const defaultShape = 'ellipse'
+const initShape    = 'diamond'
+const finalColor   = '#F44242'
+const defaultColor = '#97C2FC'
 
 $('#run-btn').click(e => {
     try {
@@ -22,6 +27,7 @@ function start(nodes, edges) {
     if (!alphabetInput)
         return
 
+    initId = undefined
     nodes.clear()
     edges.clear()
     dfa = new DFA('Hell Yeah', getAlphabetFromInput(alphabetInput))
@@ -29,6 +35,7 @@ function start(nodes, edges) {
 
 export default function ({ nodes, edges }) {
     $('#clear-btn').click(e => {
+        initId = undefined
         nodes.clear()
         edges.clear()
         dfa.clear()
@@ -67,9 +74,17 @@ export default function ({ nodes, edges }) {
                             const makeInitial = $('#make-initial').is(":checked")
 
                             dfa.addState(stateName, isFinal)
+                            nodeData.shape = defaultShape
 
-                            if (makeInitial)
+                            if (makeInitial) {
+                                if (initId)
+                                    nodes.update({ id: initId, shape: defaultShape })
+                                initId = nodeData.id
+                                nodeData.shape = initShape
                                 dfa.setInitialState(stateName)
+                            }
+                            if (isFinal)
+                                nodeData.color = finalColor
 
                             nodeData.label = stateName
                             cb(nodeData)
@@ -104,11 +119,18 @@ export default function ({ nodes, edges }) {
                             const makeInitial = initCb.is(":checked")
 
                             dfa.editState(nodeData.label, { name, isFinal })
-
-                            if (makeInitial)
+                            nodeData.shape = defaultShape
+                            console.log(nodeData.color)
+                            if (makeInitial) {
+                                if (initId)
+                                    nodes.update({ id: initId, shape: defaultShape })
+                                initId = nodeData.id
+                                nodeData.shape = initShape
                                 dfa.setInitialState(name)
+                            }
 
                             nodeData.label = name
+                            nodeData.color = isFinal ? finalColor : defaultColor
                             cb(nodeData)
                         } catch (e) {
                             alert(e.message)
