@@ -11,6 +11,9 @@ export default function ({ nodes, edges }) {
                 to:     { enabled: true,  scaleFactor: 1, type: 'arrow' },
                 middle: { enabled: false, scaleFactor: 1, type: 'arrow' },
                 from:   { enabled: false, scaleFactor: 1, type: 'arrow' }
+            },
+            font: {
+                align: 'top'
             }
         },
         physics: {
@@ -21,7 +24,7 @@ export default function ({ nodes, edges }) {
         },
         manipulation: {
             addNode: (nodeData, cb) => {
-                modal.load('./modals/state.html', () => {
+                modal.load('./app/modals/state.html', () => {
                     modal.modal('show')
                     $('#modal-accept').click(e => {
                         try {
