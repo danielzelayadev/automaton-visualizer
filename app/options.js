@@ -26,6 +26,7 @@ export default function ({ nodes, edges }) {
             addNode: (nodeData, cb) => {
                 modal.load('./app/modals/state.html', () => {
                     modal.modal('show')
+                    $('form').keypress(e => { if (e.keyCode === 13) e.preventDefault() })
                     $('#modal-accept').click(e => {
                         try {
                             const stateName   = $('#state-name').val()
@@ -62,6 +63,7 @@ export default function ({ nodes, edges }) {
                     initCb.attr('checked', state.isInitial)
 
                     modal.modal('show')
+                    $('form').keypress(e => { if (e.keyCode === 13) e.preventDefault() })
                     $('#modal-accept').click(e => {
                         try {
                             const name        = snTb.val()
@@ -87,7 +89,13 @@ export default function ({ nodes, edges }) {
                 })
             },
             deleteNode: (nodeData, cb) => {
-                cb(nodeData)
+                if (confirm('Are you sure you want to delete this state?')) {
+                    const node = nodes.get(nodeData.nodes[0])
+                    dfa.removeState(node.label)
+                    cb(nodeData)
+                } else
+                    cb(null)
+                console.log(dfa)
             },
             addEdge: (nodeData, cb) => {
                 try {
