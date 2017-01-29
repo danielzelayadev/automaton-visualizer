@@ -67,7 +67,14 @@ export default class DFA extends Automata {
 	}
 	editState (_name, { name, isFinal }) {
 		this.states = this.states.map(e => e.name === _name ? new State(name, isFinal) : e)
-	} 
+	}
+	removeState (name) {
+		this.states = this.states.filter(e => e.name !== name)
+		this.states = this.states.map(e => {
+			e.transitions = e.transitions.filter(t => t.from !== name && t.to !== name)
+			return e
+		})
+	}
 	run (w) {
 		let currState = this.states.filter(e => e.isInitial)[0]
 
