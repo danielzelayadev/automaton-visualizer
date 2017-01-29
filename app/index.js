@@ -1,6 +1,7 @@
-import DFA from './dfa'
 import options from './options'
-import { click } from './events'
+
+global.jQuery = require('jquery')
+require('bootstrap')
 
 const nodes = new vis.DataSet([])
 
@@ -14,4 +15,4 @@ const container = document.getElementById('app')
 const data = { nodes, edges }
 
 // initialize your network!
-const network = new vis.Network(container, data, options)
+const network = new vis.Network(container, data, options(data))

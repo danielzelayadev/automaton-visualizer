@@ -1,5 +1,5 @@
 import Automata, { State, Transition } from './automata'
-import { UnknownCharError, UnknownStateError, DeterminismError } from './errors'
+import { UnknownCharError, UnknownStateError, DeterminismError } from '../errors'
 
 export default class DFA extends Automata {
 	constructor(name, alphabet) { super(name, alphabet) }
