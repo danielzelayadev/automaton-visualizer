@@ -2,7 +2,7 @@ import $ from 'jquery'
 import DFA from './automata/dfa'
 
 const modal = $('#mdl')
-const dfa = new DFA('Hell Yeah', ['0','1'])
+let dfa
 
 $('#run-btn').click(e => {
     try {
@@ -12,13 +12,31 @@ $('#run-btn').click(e => {
     }
 })
 
+function getAlphabetFromInput (input) {
+    return input.split('').filter((c, i, a) => i === a.indexOf(c))
+}
+
+function start(nodes, edges) {
+    const alphabetInput = prompt('Please enter alphabet string', '')
+
+    if (!alphabetInput)
+        return
+
+    nodes.clear()
+    edges.clear()
+    dfa = new DFA('Hell Yeah', getAlphabetFromInput(alphabetInput))
+}
+
 export default function ({ nodes, edges }) {
     $('#clear-btn').click(e => {
         nodes.clear()
         edges.clear()
         dfa.clear()
-        console.log(dfa)
     })
+
+    $('#reset-btn').click(e => start(nodes, edges))
+
+    start(nodes, edges)
 
     return {
         edges: {
