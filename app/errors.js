@@ -15,3 +15,9 @@ export class DeterminismError extends Error {
         super(`State '${state}' already has a transition with character '${a}'.`)
     }
 }
+
+export class NoInitialStateError extends Error {
+    constructor() {
+        super('No initial state has been set.')
+    }
+}

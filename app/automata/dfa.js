@@ -1,5 +1,5 @@
 import Automata, { State, Transition } from './automata'
-import { UnknownCharError, UnknownStateError, DeterminismError } from '../errors'
+import { UnknownCharError, UnknownStateError, DeterminismError, NoInitialStateError } from '../errors'
 
 export default class DFA extends Automata {
 	constructor(name, alphabet) { super(name, alphabet) }
@@ -91,7 +91,7 @@ export default class DFA extends Automata {
 		let currState = this.states.filter(e => e.isInitial)[0]
 
 		if (!currState)
-			throw "No initial state has been set."
+			throw new NoInitialStateError()
 
 		for (let a of w) {
 			const t = currState.transitions.filter(e => e.a === a)[0]

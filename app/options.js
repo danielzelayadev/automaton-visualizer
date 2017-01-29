@@ -4,6 +4,14 @@ import DFA from './automata/dfa'
 const modal = $('#mdl')
 const dfa = new DFA('Hell Yeah', ['0','1'])
 
+$('#run-btn').click(e => {
+    try {
+        alert(dfa.run(prompt('Enter string to evaluate', '')) ? 'Valid String.' : 'Invalid String.')
+    } catch (e) {
+        alert(e.message)
+    }
+})
+
 export default function ({ nodes, edges }) {
     return {
         edges: {
