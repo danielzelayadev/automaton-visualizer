@@ -120,14 +120,15 @@ export default function ({ nodes, edges }) {
 
                             dfa.editState(nodeData.label, { name, isFinal })
                             nodeData.shape = defaultShape
-                            console.log(nodeData.color)
+                            
                             if (makeInitial) {
                                 if (initId)
                                     nodes.update({ id: initId, shape: defaultShape })
                                 initId = nodeData.id
                                 nodeData.shape = initShape
                                 dfa.setInitialState(name)
-                            }
+                            } else if (state.isInitial)
+                                dfa.setInitialState()
 
                             nodeData.label = name
                             nodeData.color = isFinal ? finalColor : defaultColor
