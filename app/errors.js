@@ -21,3 +21,9 @@ export class NoInitialStateError extends Error {
         super('No initial state has been set.')
     }
 }
+
+export class DuplicateStateError extends Error {
+    constructor(name) {
+        super(`State '${name}' already exists.`)
+    }
+}

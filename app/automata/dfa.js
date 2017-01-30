@@ -1,9 +1,13 @@
 import Automata, { State, Transition } from './automata'
-import { UnknownCharError, UnknownStateError, DeterminismError, NoInitialStateError } from '../errors'
+import { UnknownCharError, UnknownStateError, 
+	     DeterminismError, NoInitialStateError,
+		 DuplicateStateError } from '../errors'
 
 export default class DFA extends Automata {
 	constructor(name, alphabet) { super(name, alphabet) }
 	addState (name, isFinal) {
+		if (this.stateExists(name)) throw new DuplicateStateError(name)
+
 		this.states.push(new State(name, isFinal))
 	}
 	setInitialState(name) {
@@ -71,6 +75,8 @@ export default class DFA extends Automata {
 		return this.states.filter(e => e.name === name)[0]
 	}
 	editState (_name, { name, isFinal }) {
+		if (this.stateExists(name)) throw new DuplicateStateError(name)
+		
 		this.states = this.states.map(e => {
 			if (e.name === _name) {
 				e.name    = name
@@ -86,6 +92,9 @@ export default class DFA extends Automata {
 			e.transitions = e.transitions.filter(t => t.from !== name && t.to !== name)
 			return e
 		})
+	}
+	stateExists (name) {
+		return this.states.filter(s => s.name === name)[0]
 	}
 	clear () {
 		this.states = []
