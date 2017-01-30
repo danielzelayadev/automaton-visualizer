@@ -75,7 +75,8 @@ export default class DFA extends Automata {
 		return this.states.filter(e => e.name === name)[0]
 	}
 	editState (_name, { name, isFinal }) {
-		if (this.stateExists(name)) throw new DuplicateStateError(name)
+		if (_name !== name && this.stateExists(name)) 
+			throw new DuplicateStateError(name)
 		
 		this.states = this.states.map(e => {
 			if (e.name === _name) {
