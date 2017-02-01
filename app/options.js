@@ -34,13 +34,6 @@ function start(nodes, edges) {
 }
 
 export default function ({ nodes, edges }) {
-    $('#clear-btn').click(e => {
-        initId = undefined
-        nodes.clear()
-        edges.clear()
-        dfa.clear()
-    })
-
     $('#reset-btn').click(e => start(nodes, edges))
 
     start(nodes, edges)
