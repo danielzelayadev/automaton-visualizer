@@ -49,8 +49,14 @@ export default class Automaton {
 	removeFinal (name) {
 		this.finalStates = this.finalStates.filter(e => e.name !== name)
 	}
+	stateIsFinal (name) {
+		return this.finalStates.filter(s => s === name)[0]
+	}
 	stateExists (name) {
 		return this.states.filter(s => s.name === name)[0]
+	}
+	charInAlphabet (a) {
+		return this.alphabet.filter(e => e === a)[0]
 	}
 }
 

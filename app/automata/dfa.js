@@ -1,47 +1,25 @@
-import Automata, { State, Transition } from './automata'
+import Automaton, { State, Transition } from './automaton'
 import { UnknownCharError, UnknownStateError, 
 	     DeterminismError, NoInitialStateError,
 		 DuplicateStateError } from '../errors'
 
-export default class DFA extends Automata {
-	constructor(name, alphabet) { super(name, alphabet) }
-	addState (name, isFinal) {
-		if (this.stateExists(name)) throw new DuplicateStateError(name)
-
-		this.states.push(new State(name, isFinal))
-	}
-	setInitialState(name) {
-		this.states = this.states.map(e => {
-			if (e.name === name)
-				e.isInitial = true
-			else if (e.isInitial)
-				e.isInitial = false
-			return e
-		})
-	}
-	setFinal (stateName, isFinal) {
-		this.states.map(e => {
-			if (e.name === stateName)
-				e.isFinal = isFinal
-			return e
-		})
-	}
+export default class DFA extends Automaton {
 	addTransition (from, a, to) {
-		const fs = this.states.filter(e => e.name === from)[0]
-		const ts = this.states.filter(e => e.name === to)[0]
+		const fs = this.getState(from)
+		const ts = this.getState(to)
 
 		if (!fs)
 			throw new UnknownStateError(from)
 		if (!ts)
 			throw new UnknownStateError(to)
-		if (!this.alphabet.filter(e => e === a).length)
+		if (!this.charInAlphabet(a))
 			throw new UnknownCharError(a)
 		if (!this.transitionIsDeterministic(fs, a))
 			throw new DeterminismError(from, a)
 
 		this.states = this.states.map(e => {
 			if (e.name === from)
-				e.transitions.push(new Transition(from, a, to))
+				e.transitions = [ ...e.transitions, new Transition(from, a, to) ]
 			return e
 		})
 	}
@@ -71,40 +49,11 @@ export default class DFA extends Automata {
 	transitionIsDeterministic(from, a) {
 		return !from.transitions.filter(e => e.a === a)[0]
 	}
-	getState (name) {
-		return this.states.filter(e => e.name === name)[0]
-	}
-	editState (_name, { name, isFinal }) {
-		if (_name !== name && this.stateExists(name)) 
-			throw new DuplicateStateError(name)
-		
-		this.states = this.states.map(e => {
-			if (e.name === _name) {
-				e.name    = name
-				e.isFinal = isFinal
-			}
-
-			return e
-		})
-	}
-	removeState (name) {
-		this.states = this.states.filter(e => e.name !== name)
-		this.states = this.states.map(e => {
-			e.transitions = e.transitions.filter(t => t.from !== name && t.to !== name)
-			return e
-		})
-	}
-	stateExists (name) {
-		return this.states.filter(s => s.name === name)[0]
-	}
-	clear () {
-		this.states = []
-	}
 	run (w) {
-		let currState = this.states.filter(e => e.isInitial)[0]
-
-		if (!currState)
+		if (!this.initialState)
 			throw new NoInitialStateError()
+
+		let currState = this.getState(this.initialState)
 
 		for (let a of w) {
 			const t = currState.transitions.filter(e => e.a === a)[0]
@@ -115,6 +64,6 @@ export default class DFA extends Automata {
 			currState = this.states.filter(e => e.name === t.to)[0]
 		}
 
-		return currState.isFinal
+		return this.stateIsFinal(currState.name)
 	}
 }
