@@ -32,11 +32,19 @@ export default class Automaton {
 		})
 	}
 	removeState (name) {
+		if (!this.stateExists(name))
+			throw new UnknownStateError(name)
+
 		this.states = this.states.filter(e => e.name !== name)
+		
 		this.states = this.states.map(e => {
 			e.transitions = e.transitions.filter(t => t.from !== name && t.to !== name)
 			return e
 		})
+
+		this.removeFinal(name)
+
+		if (name === this.initialState) this.initialState = null
 	}
 	getState (name) {
 		return this.states.filter(e => e.name === name)[0]
