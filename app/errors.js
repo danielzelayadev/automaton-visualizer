@@ -27,3 +27,9 @@ export class DuplicateStateError extends Error {
         super(`State '${name}' already exists.`)
     }
 }
+
+export class DuplicateTransitionError extends Error {
+    constructor({ from, a, to }) {
+        super(`A transition from state '${from}' with char '${a}' to state '${to}' already exists.`)
+    }
+}
