@@ -29,6 +29,7 @@
     "jquery": "^3.1.1",
     "jquery-ui": "^1.12.1",
     "lodash": "^4.17.4",
+    "materialize-css": "^0.98.0",
     "vis": "^4.18.0"
   }
 }
