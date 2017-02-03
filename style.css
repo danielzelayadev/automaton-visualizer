@@ -1,5 +1,18 @@
+body {
+    overflow-x: hidden;
+}
+
 #app {
-    width: 1365px;
-    height: 500px;
+    width: 50%;
+    height: 650px;
     border: 1px solid lightgray;
+    float: left;
+}
+
+#controller {
+    width: 50%;
+    height: 650px;
+    float: right;
+    overflow-x: hidden;
+    overflow-y: hidden;
 }

@@ -3,18 +3,39 @@
 <html>
 	<head>
 		<meta charset="utf-8">
-		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta http-equiv="X-UA-Compatible">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 		<title>Automata Visualizer</title>
 		<script src="./node_modules/vis/dist/vis.js"></script>
-		<link rel="stylesheet" href="./node_modules/bootstrap/dist/css/bootstrap.css" />
 		<link rel="stylesheet" href="./node_modules/vis/dist/vis.css" />
+		<link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+		<link rel="stylesheet" href="./node_modules/materialize-css/dist/css/materialize.css" />
 		<link rel="stylesheet" href="./style.css" />
 	</head>
 	<body>
 		<div id="app"></div>
-		<button id="run-btn">Run</button>
-		<button id="reset-btn">Reset</button>
-		<div id="mdl" class="modal fade" tabindex="-1" role="dialog"></div>
+		<div id="controller" class="container">
+			<div class="row">
+					<div class="input-field col s8 offset-s2">
+								<input name="testStr" placeholder="Test String" type="text" class="validate">
+					</div>
+			</div>
+			<div class="row">
+				<a class="col s8 offset-s2 waves-effect waves-light btn" id="run-btn">Run</a>
+			</div>
+			<div class="row">
+				<a class="col s8 offset-s2 waves-effect waves-light btn" id="reset-btn">Reset</a>
+			</div>
+			<div class="row">
+				<ul id="alphabet" class="col s8 offset-s2 collection with-header"
+				    style="overflow-y: auto; max-height: 400px">
+					<li class="collection-header"><h4>Alphabet</h4></li>
+				</ul>
+			</div>
+		</div>
+		<div class="modal"></div>      
+		<script src="./node_modules/jquery/dist/jquery.js"></script>
+		<script src="./node_modules/materialize-css/dist/js/materialize.js"></script>
 		<script src="bundle.js"></script>
 	</body>
 </html>
