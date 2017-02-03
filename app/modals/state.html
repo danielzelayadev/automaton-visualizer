@@ -1,32 +1,29 @@
-<div class="modal-dialog" role="document">
-    <div class="modal-content">
-        <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-            <h4 class="modal-title">New State</h4>
-        </div>
-        <div class="modal-body">
-            <form>
-                <div class="form-group">
-                    <label for="state-name">State Name</label>
-                    <input type="text" class="form-control" id="state-name" placeholder="State Name">
-                </div>
-                <div class="checkbox">
-                    <label>
-                        <input type="checkbox" id="make-initial"> Make Initial
-                    </label>
-                </div>
-                <div class="checkbox">
-                    <label>
-                        <input type="checkbox" id="is-final"> Is Final
-                    </label>
-                </div>
-            </form>
-        </div>
-        <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-            <button type="button" class="btn btn-primary" id="modal-accept">Accept</button>
-        </div>
+<div class="modal-content">
+    <div class="row">
+        <h4 class="col s12">State Form</h4>
     </div>
+    <div class="row">
+        <form name="stateForm" class="col s12" novalidate>
+            <div class="row">
+                <div class="input-field col s12">
+                     <input name="stateName" placeholder="State Name"
+                            type="text" class="validate">
+                </div>
+            </div>
+            <div class="row">
+                <p>
+                    <input type="checkbox" id="make-init" name="makeInitial" />
+                    <label for="make-init">Make Initial</label>
+                </p>
+                <p>
+                    <input type="checkbox" id="is-final" name="isFinal" />
+                    <label for="is-final">Is Final</label>
+                </p>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="modal-footer">
+    <a id="submit" class="modal-action modal-close waves-effect waves-green btn-flat">Submit</a>
+    <a id="close" class=" modal-action modal-close waves-effect waves-green btn-flat">Cancel</a>
 </div>
