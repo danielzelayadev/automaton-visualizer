@@ -30,6 +30,15 @@ export default class Automaton {
 				e.name = newName
 			return e
 		})
+
+		this.finalStates.map(s => {
+			if (s === oldName)
+				return newName
+			return s
+		})
+
+		if (this.initialState === oldName)
+			this.initialState = newName
 	}
 	removeState (name) {
 		if (!this.stateExists(name))
@@ -59,6 +68,9 @@ export default class Automaton {
 	}
 	stateIsFinal (name) {
 		return this.finalStates.filter(s => s === name)[0]
+	}
+	stateIsInitial (name) {
+		return this.initialState === name
 	}
 	stateExists (name) {
 		return this.states.filter(s => s.name === name)[0]
