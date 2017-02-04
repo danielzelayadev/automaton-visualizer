@@ -17,5 +17,5 @@ export default {
     interaction: {
         hover: true
     },
-    manipulation: getCurrentManipulation('DFA')()
+    manipulation: getCurrentManipulation('NFA')()
 }
