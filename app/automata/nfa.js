@@ -14,7 +14,7 @@ export default class NFA extends Automaton {
 			throw new UnknownStateError(to)
 		if (!this.charInAlphabet(a))
 			throw new UnknownCharError(a)
-        if (fs.transitions.filter(t => t.a === a && t.to === to)[0])
+        if (this.stateHasTransition(from, a, to))
             throw new DuplicateTransitionError({ from, a, to })
 
 		this.states = this.states.map(e => {
@@ -37,14 +37,20 @@ export default class NFA extends Automaton {
 					e.transitions = e.transitions.filter(t => !(t.a === a && t.to === _to))
 				else
 					e.transitions = e.transitions.map(t => { 
-						if (t.a === a && t.to === _to) 
+						if (t.a === a && t.to === _to) {
+							if (this.stateHasTransition(from, a, to))
+								throw new DuplicateTransitionError({ from, a, to })
 							t.to = to 
+						}
 						return t
 					})
 			else if (e.name === from)
 				this.addTransition(e.name, a, to)	
 			return e
 		})
+	}
+	stateHasTransition(from, a, to) {
+		return this.getState(from).transitions.filter(t => t.a === a && t.to === to)[0]
 	}
 	run (w) {
 		if (!this.initialState)
