@@ -14,5 +14,5 @@ body {
     height: 650px;
     float: right;
     overflow-x: hidden;
-    overflow-y: hidden;
+    overflow-y: auto;
 }

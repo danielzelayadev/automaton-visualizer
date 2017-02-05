@@ -16,6 +16,24 @@
 		<div id="app"></div>
 		<div id="controller" class="container">
 			<div class="row">
+				<h3 id="title" class="col s8 offset-s2">DFA</h3>
+			</div>
+			<div class="row">
+				<div class="input-field col s8 offset-s2">
+					<select>
+						<option selected>DFA</option>
+						<option>NFA</option>
+					</select>
+					<label>Automaton Select</label>
+				</div>
+			</div>
+			<div class="row">
+				<ul id="alphabet" class="col s8 offset-s2 collection with-header"
+				    style="overflow-y: auto; max-height: 400px">
+					<li class="collection-header"><h4>Alphabet</h4></li>
+				</ul>
+			</div>
+			<div class="row">
 					<div class="input-field col s8 offset-s2">
 								<input name="testStr" placeholder="Test String" type="text" class="validate">
 					</div>
@@ -25,12 +43,6 @@
 			</div>
 			<div class="row">
 				<a class="col s8 offset-s2 waves-effect waves-light btn" id="reset-btn">Reset</a>
-			</div>
-			<div class="row">
-				<ul id="alphabet" class="col s8 offset-s2 collection with-header"
-				    style="overflow-y: auto; max-height: 400px">
-					<li class="collection-header"><h4>Alphabet</h4></li>
-				</ul>
 			</div>
 		</div>
 		<div class="modal"></div>      
