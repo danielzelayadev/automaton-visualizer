@@ -13,6 +13,9 @@ export default class Automaton {
 			throw new UnknownStateError(name)
 		this.initialState = name
 	}
+	clearInitialState() {
+		this.initialState = null
+	}
 	addState (name, isFinal) {
 		if (this.stateExists(name)) throw new DuplicateStateError(name)
 
@@ -64,7 +67,7 @@ export default class Automaton {
 		this.finalStates = [ ...this.finalStates, name ]
 	}
 	removeFinal (name) {
-		this.finalStates = this.finalStates.filter(e => e.name !== name)
+		this.finalStates = this.finalStates.filter(e => e !== name)
 	}
 	stateIsFinal (name) {
 		return this.finalStates.filter(s => s === name)[0]
@@ -78,6 +81,10 @@ export default class Automaton {
 	charInAlphabet (a) {
 		return this.alphabet.filter(e => e === a)[0]
 	}
+	addTransition(){}
+	editTransition(){}
+	removeTransition(){}
+	run(){}
 }
 
 export class State {
