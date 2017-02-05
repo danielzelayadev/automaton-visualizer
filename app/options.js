@@ -1,4 +1,4 @@
-export default manipulation => ({
+export default m => ({
     edges: {
         arrows: {
             to:     { enabled: true,  scaleFactor: 1, type: 'arrow' },
@@ -15,5 +15,12 @@ export default manipulation => ({
     interaction: {
         hover: true
     },
-    manipulation: manipulation
+    manipulation: {
+        addNode: m.addNode.bind(m),
+        editNode: m.editNode.bind(m),
+        deleteNode: m.deleteNode.bind(m),
+        addEdge: m.addEdge.bind(m),
+        editEdge: m.editEdge.bind(m),
+        deleteEdge: m.deleteEdge.bind(m)
+    }
 })

@@ -29,9 +29,11 @@ function start(alphabetStr) {
 
     $('#title').text(currentVisualizer)
 
+    nodes.clear()
+    edges.clear()
     new vis.Network(document.getElementById('app'), { nodes, edges}, 
-                    options(getCurrentManipulation(currentVisualizer)
-                            (alphabet, { nodes, edges })))
+                    options(getCurrentManipulation(
+                        currentVisualizer, alphabet, { nodes, edges })))
 }
 
 function onVisualizerChange() {

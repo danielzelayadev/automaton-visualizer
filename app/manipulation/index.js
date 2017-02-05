@@ -1,13 +1,15 @@
-import dfaManipulation from './dfa-manipulation'
-import nfaManipulation from './nfa-manipulation'
+import DFAManipulation from './DFAManipulation'
+import NFAManipulation from './NFAManipulation'
+import DFA from '../automata/dfa'
+import NFA from '../automata/nfa'
 
-export function getCurrentManipulation (currentVisualizer) {
+export function getCurrentManipulation (currentVisualizer, alphabet, data) {
     switch (currentVisualizer) {
         case 'DFA':
-        return dfaManipulation
+        return new DFAManipulation(new DFA(alphabet), data)
         case 'NFA':
-        return nfaManipulation
+        return new NFAManipulation(new NFA(alphabet), data)
     }
 
-    return () => false
+    return false
 }
