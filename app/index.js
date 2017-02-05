@@ -14,10 +14,13 @@ select.material_select()
 select.change(onVisualizerChange)
 resetBtn.click(e => start(prompt('Please enter alphabet string: ')))
 
-resetBtn.click()
+// resetBtn.click()
 
 function start(alphabetStr) {
-    const alphabet = getSetFromString(alphabetStr ? alphabetStr : '')
+    if (!alphabetStr)
+        return
+
+    const alphabet = getSetFromString(alphabetStr)
 
     $('#alphabet .collection-item').remove()
 
