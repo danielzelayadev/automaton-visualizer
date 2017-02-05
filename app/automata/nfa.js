@@ -1,4 +1,5 @@
 import Automaton, { State, Transition } from './automaton'
+import DFA from './dfa'
 import { UnknownCharError, UnknownStateError, 
 	     DeterminismError, NoInitialStateError,
 		 DuplicateStateError, DuplicateTransitionError } from '../errors'
@@ -69,7 +70,50 @@ export default class NFA extends Automaton {
 			currStates = transitions.map(t => this.getState(t.to))
 		}
 
-		return currStates.reduce((accum, curr) => accum ? true : 
+		return this.hasFinalState(currStates)
+	}
+	toDFA() {
+		if (!this.initialState)
+			throw new NoInitialStateError()
+
+		const dfa = new DFA(this.alphabet)
+
+		let currStates = [ this.getState(this.initialState) ]
+
+		const stateName = this.joinStateNames(currStates)
+
+		dfa.addState(stateName, this.stateIsFinal(this.initialState))
+		dfa.setInitialState(stateName)
+
+		return this.todfa(dfa, currStates)
+	}
+	todfa(dfa, currStates) {
+		for (const a of this.alphabet) {
+			const transitions = currStates.reduce((accum, curr) => {
+				return [ ...accum, ...curr.transitions.filter(t => t.a === a) ]
+			}, [])
+
+			if (!transitions.length) continue
+
+			const toStates = transitions.map(t => this.getState(t.to))
+
+			const stateName = this.joinStateNames(toStates)
+
+			if (!dfa.stateExists(stateName)) {
+				dfa.addState(stateName, this.hasFinalState(toStates))
+				dfa = this.todfa(dfa, toStates)
+			}
+
+			dfa.addTransition(this.joinStateNames(currStates), a, stateName)
+		}
+
+		return dfa
+	}
+	joinStateNames(states) {
+		return '{' + states.reduce((accum, curr) => `${accum}${accum.length ? ',' : ''}${curr.name}`, "") + '}'
+	}
+	hasFinalState(states) {
+		return states.reduce((accum, curr) => accum ? true : 
             this.stateIsFinal(curr.name), false)
 	}
 }
