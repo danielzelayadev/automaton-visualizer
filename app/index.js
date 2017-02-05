@@ -1,15 +1,40 @@
 import options from './options'
+import { getSetFromString } from './utils'
+import { getCurrentManipulation } from './manipulation'
 
-export const nodes = new vis.DataSet([])
+const nodes = new vis.DataSet([])
+const edges = new vis.DataSet([])
 
-// create an array with edges
-export const edges = new vis.DataSet([])
+const select   = $('select')
+const resetBtn = $('#reset-btn')
 
-// create a network
-const container = document.getElementById('app')
+let currentVisualizer = 'DFA'
 
-// provide the data in the vis format
-const data = { nodes, edges }
+select.material_select()
+select.change(onVisualizerChange)
+resetBtn.click(e => start(prompt('Please enter alphabet string: ')))
 
-// initialize your network!
-const network = new vis.Network(container, data, options)
+resetBtn.click()
+
+function start(alphabetStr) {
+    const alphabet = getSetFromString(alphabetStr ? alphabetStr : '')
+
+    $('#alphabet .collection-item').remove()
+
+    for (let a of alphabet)
+        $('#alphabet').append(`<li class="collection-item">${a}</li>`)
+
+    $('#title').text(currentVisualizer)
+
+    new vis.Network(document.getElementById('app'), { nodes, edges}, 
+                    options(getCurrentManipulation(currentVisualizer)
+                            (alphabet, { nodes, edges })))
+}
+
+function onVisualizerChange() {
+    const visSelection = $('select option:selected').text()
+    if (currentVisualizer !== visSelection) {
+        currentVisualizer = visSelection
+        resetBtn.click()
+    }
+}

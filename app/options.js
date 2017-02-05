@@ -1,6 +1,4 @@
-import { getCurrentManipulation } from './manipulation'
-
-export default {
+export default manipulation => ({
     edges: {
         arrows: {
             to:     { enabled: true,  scaleFactor: 1, type: 'arrow' },
@@ -17,5 +15,5 @@ export default {
     interaction: {
         hover: true
     },
-    manipulation: getCurrentManipulation('NFA')()
-}
+    manipulation: manipulation
+})

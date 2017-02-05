@@ -1,44 +1,15 @@
 import Modal from '../core/modal'
 import DFA from '../automata/dfa'
-import { nodes, edges } from '..'
+import { runAutomaton } from '../utils'
 import { defaultShape, defaultColor, finalColor, initShape,
          stateFormUrl } from '../constants'
 
-let dfa, initId
-
-function getAlphabetFromInput (input) {
-    return input.split('').filter((c, i, a) => i === a.indexOf(c))
-}
-
-function start() {
-    const alphabetInput = prompt('Please enter alphabet string', '')
-
-    if (!alphabetInput)
-        return
-
-    initId = undefined
-    nodes.clear()
-    edges.clear()
-    dfa = new DFA(getAlphabetFromInput(alphabetInput))
-
-    $('#alphabet .collection-item').remove()
-    for (let a of dfa.alphabet)
-        $('#alphabet').append(`<li class="collection-item">${a}</li>`)
-}
-
-export default () => {
+export default (alphabet, { nodes, edges }) => {
     const modal = new Modal('.modal')
+    const dfa = new DFA(alphabet)
+    let initId
 
-    $('#reset-btn').click(e => start())
-    $('#run-btn').click(e => {
-        if (!dfa) return
-        try {
-            alert(dfa.run($('[name="testStr"]').val()) ? "Valid String!" : "Invalid String!")
-        } catch (e) {
-            alert(e.message)
-        }
-    })
-    // start()
+    $('#run-btn').click(e => runAutomaton(dfa))
 
     return {
         addNode: (nodeData, cb) => {
