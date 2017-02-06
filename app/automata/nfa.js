@@ -57,20 +57,25 @@ export default class NFA extends Automaton {
 		if (!this.initialState)
 			throw new NoInitialStateError()
 
-		let currStates = [ this.getState(this.initialState) ]
-
+		let currStates = this.getStartStates()
+		
 		for (let a of w) {
-			const transitions = currStates.reduce((accum, curr) => {
-                return [ ...accum, ...curr.transitions.filter(t => t.a === a) ]
-            }, [])
+			const transitions = this.getTransitionsFor(currStates, a)
 
-			if (transitions.length === 0)
+			if (!transitions.length)
 				return false
 
 			currStates = transitions.map(t => this.getState(t.to))
 		}
 
 		return this.hasFinalState(currStates)
+	}
+	getStartStates() {
+		return [ this.getState(this.initialState) ]
+	}
+	getTransitionsFor(states, a) {
+		return states.reduce((accum, curr) => 
+		[ ...accum, ...curr.transitions.filter(t => t.a === a) ], [])
 	}
 	toDFA() {
 		if (!this.initialState)
