@@ -1,6 +1,14 @@
 import AutomatonManipulation from './AutomatonManipulation'
+import NFA from '../automata/nfa'
 
 export default class NFAManipulation extends AutomatonManipulation {
+    constructor(automaton = null, data) {
+        super(automaton, data)
+
+        $('.opt.nfa').show()
+        $('#convert-btn').off('click')
+        $('#convert-btn').click(e => this.toDFA())
+    }
     editEdge(nodeData, cb) {
         const from     = this.nodes.get(nodeData.from).label
         const to       = this.nodes.get(nodeData.to).label
@@ -26,5 +34,32 @@ export default class NFAManipulation extends AutomatonManipulation {
         } else
             cb(null)
         console.log(this.automaton.states)
+    }
+    toDFA() {
+        let dfa
+
+        try {
+            dfa = this.automaton.toDFA()
+        } catch (e) {
+            alert(e.message)
+            return
+        }
+
+        this.clear()
+
+        for (const state of dfa.states) {
+            const id = this.nodes.add({ label: state.name })[0]
+            this.updateStateNode(id, state.name, dfa.stateIsInitial(state.name),
+                                 dfa.stateIsFinal(state.name))
+        }
+        for (const state of dfa.states)
+            for (const t of state.transitions) {
+                const from = this.nodes.get({ filter: n => n.label === t.from })[0].id
+                const to   = this.nodes.get({ filter: n => n.label === t.to })[0].id
+                this.edges.add({ from, label: t.a, to })
+            }
+        
+        this.automaton = new NFA([])
+        this.automaton.setFromAutomaton(dfa)
     }
 }
