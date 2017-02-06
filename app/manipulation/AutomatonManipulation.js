@@ -13,24 +13,12 @@ export default class AutomatonManipulation {
         $('#run-btn').click(e => this.runAutomaton())
     }
     addNode(nodeData, cb) {
-        this.modal.loadForm(stateFormUrl, 
-        { name: 'stateForm', vals: { stateName: '', makeInitial: false, isFinal: false } },
-        ({ stateName, isFinal, makeInitial }) => {
+        this.modal.loadForm(stateFormUrl, { name: 'stateForm', 
+        vals: { stateName: '', makeInitial: false, isFinal: false } },
+        data => {
             try {
-                this.automaton.addState(stateName, isFinal)
-                nodeData.shape = defaultShape
-
-                if (makeInitial) {
-                    if (this.initId)
-                        this.nodes.update({ id: this.initId, shape: defaultShape })
-                    this.initId = nodeData.id
-                    nodeData.shape = initShape
-                    this.automaton.setInitialState(stateName)
-                }
-                if (isFinal)
-                    nodeData.color = finalColor
-
-                nodeData.label = stateName
+                this.addnode(nodeData.id, data.stateName, 
+                             data.makeInitial, data.isFinal)
                 cb(nodeData)
             } catch (e) {
                 alert(e.message)
@@ -40,47 +28,55 @@ export default class AutomatonManipulation {
             }
         })
     }
+    addnode(id, stateName, makeInitial, isFinal) {
+        this.automaton.addState(stateName, isFinal)
+
+        if (makeInitial) 
+            this.automaton.setInitialState(stateName)
+
+        this.updateStateNode(id, stateName, makeInitial, isFinal)
+    }
     editNode(nodeData, cb) {
         const state = nodeData.label
-
-        this.modal.loadForm(stateFormUrl,
-        { name: 'stateForm', vals: { stateName: state, 
-            makeInitial: this.automaton.stateIsInitial(state), isFinal: this.automaton.stateIsFinal(state) } 
-        }, ({ stateName, makeInitial, isFinal }) => {
+        this.modal.loadForm(stateFormUrl, { name: 'stateForm', 
+        vals: { stateName: state, makeInitial: this.automaton.stateIsInitial(state), 
+                isFinal: this.automaton.stateIsFinal(state) }  }, 
+        data => {
             try {
-                this.automaton.editState(nodeData.label, stateName)
-                nodeData.shape = defaultShape
-
-                const wasFinal = this.automaton.stateIsFinal(stateName)
-
-                if (!isFinal && wasFinal)
-                    this.automaton.removeFinal(stateName)
-                else if (isFinal && !wasFinal)
-                    this.automaton.addFinal(stateName)
-
-                if (makeInitial) {
-                    if (this.initId)
-                        this.nodes.update({ id: this.initId, shape: defaultShape })
-                    this.initId = nodeData.id
-                    nodeData.shape = initShape
-                    this.automaton.setInitialState(stateName)
-                } else if (this.automaton.stateIsInitial(stateName))
-                    this.automaton.clearInitialState()
-
-                nodeData.label = stateName
-                nodeData.color = isFinal ? finalColor : defaultColor
-                cb(nodeData)
+                cb(this.editnode(nodeData.id, state, data.stateName, 
+                                 data.makeInitial, data.isFinal))
             } catch (e) {
                 alert(e.message)
                 cb(null)
             } finally {
                 console.log(this.automaton)
             }
-        }, () => {cb(null)})
+        }, () => { cb(null) })
+    }
+    editnode(id, oldName, newName, makeInitial, isFinal) {
+        this.automaton.editState(oldName, newName)
+
+        const wasFinal = this.automaton.stateIsFinal(newName)
+
+        if (!isFinal && wasFinal)
+            this.automaton.removeFinal(newName)
+        else if (isFinal && !wasFinal)
+            this.automaton.addFinal(newName)
+
+        if (makeInitial)
+            this.automaton.setInitialState(newName)
+        else if (this.automaton.stateIsInitial(newName))
+            this.automaton.clearInitialState()
+
+        return this.updateStateNode(id, newName, makeInitial, isFinal)
     }
     deleteNode(nodeData, cb) {
         if (confirm('Are you sure you want to delete this state?')) {
             const node = this.nodes.get(nodeData.nodes[0])
+
+            if (this.automaton.stateIsInitial(node.label))
+                this.initId = null
+
             this.automaton.removeState(node.label)
             cb(nodeData)
         } else
@@ -105,6 +101,28 @@ export default class AutomatonManipulation {
             alert(e.message)
         }
         console.log(this.automaton.states)
+    }
+    updateStateNode(id, name, makeInitial, isFinal) {
+        const nodeData = { id, label: name, shape: defaultShape }
+
+        if (makeInitial) {
+            if (this.initId)
+                this.nodes.update({ id: this.initId, shape: defaultShape })
+
+            this.initId = id
+            nodeData.shape = initShape
+        }
+
+        nodeData.color = isFinal ? finalColor : defaultColor
+
+        this.nodes.update(nodeData)
+        return nodeData
+    }
+    clear() {
+        this.automaton = null
+        this.initId = null
+        this.nodes.clear()
+        this.edges.clear()
     }
     runAutomaton() {
         if (!this.automaton) return
