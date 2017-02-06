@@ -70,16 +70,16 @@ export default class Automaton {
 		this.finalStates = this.finalStates.filter(e => e !== name)
 	}
 	stateIsFinal (name) {
-		return this.finalStates.filter(s => s === name)[0]
+		return this.finalStates.filter(s => s === name).length > 0
 	}
 	stateIsInitial (name) {
 		return this.initialState === name
 	}
 	stateExists (name) {
-		return this.states.filter(s => s.name === name)[0]
+		return this.states.filter(s => s.name === name).length > 0
 	}
 	charInAlphabet (a) {
-		return this.alphabet.filter(e => e === a)[0]
+		return this.alphabet.filter(e => e === a).length > 0
 	}
 	setFromAutomaton(a) {
 		this.alphabet = [ ...a.alphabet ]
