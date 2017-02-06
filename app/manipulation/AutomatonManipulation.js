@@ -124,6 +124,17 @@ export default class AutomatonManipulation {
         this.nodes.clear()
         this.edges.clear()
     }
+    // TODO: Modificar Alphabet Table
+    removeFromAlphabet(a) {
+        this.automaton.removeFromAlphabet(a)
+        this.removeAllEdgesWithChar(a)
+    }
+    removeAllEdgesWithChar(a) {
+        const edges = this.edges.get({ filter: e => e.label === a })
+
+        for (const edge of edges)
+            this.edges.remove(edge.id)
+    }
     runAutomaton() {
         if (!this.automaton) return
         try {
