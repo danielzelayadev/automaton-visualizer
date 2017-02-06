@@ -81,6 +81,12 @@ export default class Automaton {
 	charInAlphabet (a) {
 		return this.alphabet.filter(e => e === a)[0]
 	}
+	setFromAutomaton(a) {
+		this.alphabet = [ ...a.alphabet ]
+		this.states = [...a.states]
+        this.initialState = a.initialState
+        this.finalStates = [...a.finalStates]
+	}
 	addTransition(){}
 	editTransition(){}
 	removeTransition(){}
