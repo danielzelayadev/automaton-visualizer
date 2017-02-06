@@ -1,5 +1,7 @@
 import AutomatonManipulation from './AutomatonManipulation'
 import NFA from '../automata/nfa'
+import NFAe from '../automata/nfa-e'
+import { epsilon } from '../constants'
 
 export default class NFAManipulation extends AutomatonManipulation {
     constructor(automaton = null, data) {
@@ -8,6 +10,7 @@ export default class NFAManipulation extends AutomatonManipulation {
         $('.opt.nfa').show()
         $('#convert-btn').off('click')
         $('#convert-btn').click(e => this.toDFA())
+        $('#epsilon-toggle').change(this.onEpsilonToggleChange.bind(this))
     }
     editEdge(nodeData, cb) {
         const from     = this.nodes.get(nodeData.from).label
@@ -61,5 +64,16 @@ export default class NFAManipulation extends AutomatonManipulation {
         
         this.automaton = new NFA([])
         this.automaton.setFromAutomaton(dfa)
+    }
+    onEpsilonToggleChange(e) {
+        const { checked } = e.target
+
+        let newAutomaton = checked ?  new NFAe([]) : new NFA([])
+
+        newAutomaton.setFromAutomaton(this.automaton)
+        this.automaton = newAutomaton
+
+        if (!checked)
+            this.removeFromAlphabet(epsilon)
     }
 }
