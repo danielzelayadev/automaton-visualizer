@@ -8,13 +8,15 @@ const edges = new vis.DataSet([])
 const select   = $('select')
 const resetBtn = $('#reset-btn')
 
+const alphabetPromptText = 'Please enter alphabet string: '
+
 let currentVisualizer = 'DFA'
 
 select.material_select()
 select.change(onVisualizerChange)
-resetBtn.click(e => start(prompt('Please enter alphabet string: ')))
+resetBtn.click(e => start(prompt(alphabetPromptText)))
 
-// resetBtn.click()
+start('01')
 
 function start(alphabetStr) {
     if (!alphabetStr)
@@ -27,6 +29,8 @@ function start(alphabetStr) {
     for (let a of alphabet)
         $('#alphabet').append(`<li class="collection-item">${a}</li>`)
 
+    $('.opt').hide()
+
     $('#title').text(currentVisualizer)
 
     nodes.clear()
@@ -37,9 +41,16 @@ function start(alphabetStr) {
 }
 
 function onVisualizerChange() {
-    const visSelection = $('select option:selected').text()
+    const visSelection = select.val()
     if (currentVisualizer !== visSelection) {
+        let alphabetStr = prompt(alphabetPromptText)
+
+        if (!alphabetStr) {
+            select.val(currentVisualizer)
+            return
+        }
+
         currentVisualizer = visSelection
-        resetBtn.click()
+        start(alphabetStr)
     }
 }

@@ -21,8 +21,8 @@
 			<div class="row">
 				<div class="input-field col s8 offset-s2">
 					<select>
-						<option selected>DFA</option>
-						<option>NFA</option>
+						<option val="DFA">DFA</option>
+						<option val="NFA">NFA</option>
 					</select>
 					<label>Automaton Select</label>
 				</div>
@@ -40,6 +40,9 @@
 			</div>
 			<div class="row">
 				<a class="col s8 offset-s2 waves-effect waves-light btn" id="run-btn">Run</a>
+			</div>
+			<div class="row opt nfa">
+				<a class="col s8 offset-s2 waves-effect waves-light btn" id="convert-btn">Convert to DFA</a>
 			</div>
 			<div class="row">
 				<a class="col s8 offset-s2 waves-effect waves-light btn" id="reset-btn">Reset</a>
