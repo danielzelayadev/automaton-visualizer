@@ -30,4 +30,10 @@ export default class NFAe extends NFA {
 
         return true
     }
+    setFromAutomaton(a) {
+        this.alphabet = [ ...a.alphabet, epsilon ]
+		this.states = [...a.states]
+        this.initialState = a.initialState
+        this.finalStates = [...a.finalStates]
+    }
 }
