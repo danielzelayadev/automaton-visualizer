@@ -12,15 +12,16 @@ export default class Modal {
             this.mdl.modal({ dismissible: false })
             this.mdl.modal('open')
             this.mdl.off('keypress')
-            this.mdl.keypress(e => this.closeOnEnter(e.which, '#submit'))
+            this.mdl.keypress(e => this.closeOnKey(e.which, 13, '#submit'))
+            this.mdl.keyup(e => this.closeOnKey(e.keyCode, 27, '#cancel'))
             this.mdl.find('#submit').click(e => onSubmit(form.getValues()))
             this.mdl.find('#cancel').click(e => onCancel())
 
             form.inputs[0].focus()
         })
     }
-    closeOnEnter (key, closeId) {
-        if (key === 13) 
+    closeOnKey (keypressed, key, closeId) {
+        if (keypressed === key)
             this.mdl.find(closeId).click()
     }
 }
