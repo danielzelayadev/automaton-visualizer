@@ -1,39 +1,49 @@
 import NFA from './nfa'
+import DFA from './dfa'
 import { epsilon } from '../constants'
 
 export default class NFAe extends NFA {
-    constructor(alphabet) {
-        super(alphabet)
-        this.alphabet = [ ...this.alphabet, epsilon ]
+    charInAlphabet (a) {
+        return a === epsilon ? true :
+               this.alphabet.filter(e => e === a).length > 0        
     }
-    getStartStates() {
+    getConversionStartStates() {
+        return this.getEClosure(this.initialState)
+    }
+    getRunStartStates() {
         const initState = this.getState(this.initialState)
 		let epsilonStates = this.getTransitionsFor([initState], epsilon)
 				            .map(t => this.getState(t.to))
 		return [ initState, ...epsilonStates ]
 	}
     getTransitionsFor(states, a) {
-        return states.reduce((accum, curr) => [ ...accum, 
-        ...curr.transitions.filter(t => (t.a === a || t.a === epsilon)) ], 
-        [])
-    }
-    hasFinalState(states) {
-        const hasFinal = s => s.reduce((accum, curr) => accum ? true : 
-                              this.stateIsFinal(curr.name), false)
-                              
-        if (!hasFinal(states)) {
-            states = this.getTransitionsFor(states, epsilon)
-                     .map(t => this.getState(t.to))
-            
-            return hasFinal(states)
-        }
+        let trans = states.reduce((accum, curr) => [ ...accum, 
+            ...curr.transitions.filter(t => (t.a === a)) ], [])
+        
+        const toStates = trans.map(t => t.to)
 
-        return true
+        for (const ts of toStates)
+            trans = [ ...trans, 
+            ...this.getEClosure(ts).reduce((a, c) => 
+                [ ...a, ...this.getETransitions(c.name) ], []) ]
+
+        return [ ...new Set(trans) ]
     }
-    setFromAutomaton(a) {
-        this.alphabet = [ ...a.alphabet, epsilon ]
-		this.states = [...a.states]
-        this.initialState = a.initialState
-        this.finalStates = [...a.finalStates]
+    getETransitions(state) {
+        return this.getState(state).transitions.filter(t => t.a === epsilon)
+    }
+    getEStates(state) {
+        return this.getETransitions(state).map(t => this.getState(t.to))
+    }
+    getEClosure(state) {
+        return [ this.getState(state), ...this.geteclosure(state) ]
+    }
+    geteclosure(state) {
+        let eStates = this.getEStates(state)
+
+        for (const s of eStates)
+            eStates = [ ...eStates, ...this.geteclosure(s.name) ]
+        
+        return eStates
     }
 }
