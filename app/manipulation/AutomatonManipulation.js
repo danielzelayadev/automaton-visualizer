@@ -9,8 +9,11 @@ export default class AutomatonManipulation {
         this.automaton = automaton
         this.nodes = nodes
         this.edges = edges
+        
         $('#run-btn').off('click')
         $('#run-btn').click(e => this.runAutomaton())
+
+        this.buildFromAutomaton(automaton)
     }
     addNode(nodeData, cb) {
         this.modal.loadForm(stateFormUrl, { name: 'stateForm', 
@@ -120,6 +123,9 @@ export default class AutomatonManipulation {
     }
     clear() {
         this.automaton = null
+        this.clearUI()
+    }
+    clearUI() {
         this.initId = null
         this.nodes.clear()
         this.edges.clear()
@@ -134,6 +140,26 @@ export default class AutomatonManipulation {
 
         for (const edge of edges)
             this.edges.remove(edge.id)
+    }
+    // TODO: Update Alphabet Table
+    buildFromAutomaton(automaton) {
+        if (!automaton) return
+        
+        this.clearUI()
+
+        for (const state of automaton.states) {
+            const id = this.nodes.add({ label: state.name })[0]
+            this.updateStateNode(id, state.name, automaton.stateIsInitial(state.name),
+                                 automaton.stateIsFinal(state.name))
+        }
+        for (const state of automaton.states)
+            for (const t of state.transitions) {
+                const from = this.nodes.get({ filter: n => n.label === t.from })[0].id
+                const to   = this.nodes.get({ filter: n => n.label === t.to })[0].id
+                this.edges.add({ from, label: t.a, to })
+            }
+        
+        this.automaton.setFromAutomaton(automaton)
     }
     runAutomaton() {
         if (!this.automaton) return

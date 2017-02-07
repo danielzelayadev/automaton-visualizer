@@ -48,22 +48,7 @@ export default class NFAManipulation extends AutomatonManipulation {
             return
         }
 
-        this.clear()
-
-        for (const state of dfa.states) {
-            const id = this.nodes.add({ label: state.name })[0]
-            this.updateStateNode(id, state.name, dfa.stateIsInitial(state.name),
-                                 dfa.stateIsFinal(state.name))
-        }
-        for (const state of dfa.states)
-            for (const t of state.transitions) {
-                const from = this.nodes.get({ filter: n => n.label === t.from })[0].id
-                const to   = this.nodes.get({ filter: n => n.label === t.to })[0].id
-                this.edges.add({ from, label: t.a, to })
-            }
-        
-        this.automaton = new NFA([])
-        this.automaton.setFromAutomaton(dfa)
+        this.buildFromAutomaton(dfa)
     }
     onEpsilonToggleChange(e) {
         const { checked } = e.target
@@ -72,8 +57,5 @@ export default class NFAManipulation extends AutomatonManipulation {
 
         newAutomaton.setFromAutomaton(this.automaton)
         this.automaton = newAutomaton
-
-        if (!checked)
-            this.removeFromAlphabet(epsilon)
     }
 }
