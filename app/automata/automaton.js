@@ -98,9 +98,28 @@ export default class Automaton {
 		for (const s of this.states)
 			s.transitions = s.transitions.filter(t => t.a !== a)
 	}
-	addTransition(){}
+	addTransition (from, a, to) {
+		const fs = this.getState(from)
+		const ts = this.getState(to)
+
+		if (!fs)
+			throw new UnknownStateError(from)
+		if (!ts)
+			throw new UnknownStateError(to)
+		if (!this.charInAlphabet(a))
+			throw new UnknownCharError(a)
+
+		this.extraTransitionValidations(from, a, to)
+
+		this.states = this.states.map(e => {
+			if (e.name === from)
+				e.transitions = [ ...e.transitions, new Transition(from, a, to) ]
+			return e
+		})
+	}
 	editTransition(){}
 	removeTransition(){}
+	extraTransitionValidations(from, a, to){}
 	run(){}
 }
 
