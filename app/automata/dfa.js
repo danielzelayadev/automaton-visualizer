@@ -4,25 +4,6 @@ import { UnknownCharError, UnknownStateError,
 		 DuplicateStateError } from '../errors'
 
 export default class DFA extends Automaton {
-	addTransition (from, a, to) {
-		const fs = this.getState(from)
-		const ts = this.getState(to)
-
-		if (!fs)
-			throw new UnknownStateError(from)
-		if (!ts)
-			throw new UnknownStateError(to)
-		if (!this.charInAlphabet(a))
-			throw new UnknownCharError(a)
-		if (!this.transitionIsDeterministic(fs, a))
-			throw new DeterminismError(from, a)
-
-		this.states = this.states.map(e => {
-			if (e.name === from)
-				e.transitions = [ ...e.transitions, new Transition(from, a, to) ]
-			return e
-		})
-	}
 	removeTransition (from, a) {
 		this.states = this.states.map(e => {
 			if (e.name === from)
@@ -48,6 +29,10 @@ export default class DFA extends Automaton {
 	}
 	transitionIsDeterministic(from, a) {
 		return !from.transitions.filter(e => e.a === a)[0]
+	}
+	extraTransitionValidations (from, a, to) {
+		if (!this.transitionIsDeterministic(this.getState(from), a))
+			throw new DeterminismError(from, a)
 	}
 	run (w) {
 		if (!this.initialState)
