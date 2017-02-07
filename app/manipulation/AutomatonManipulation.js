@@ -135,6 +135,10 @@ export default class AutomatonManipulation {
         this.automaton.removeFromAlphabet(a)
         this.removeAllEdgesWithChar(a)
     }
+    removeAllTransitionsWithChar(a) {
+        this.automaton.removeAllTransitionsWithChar(a)
+        this.removeAllEdgesWithChar(a)
+    }
     removeAllEdgesWithChar(a) {
         const edges = this.edges.get({ filter: e => e.label === a })
 
