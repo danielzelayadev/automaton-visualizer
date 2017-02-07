@@ -57,5 +57,8 @@ export default class NFAManipulation extends AutomatonManipulation {
 
         newAutomaton.setFromAutomaton(this.automaton)
         this.automaton = newAutomaton
+
+        if (!checked)
+            this.removeAllTransitionsWithChar(epsilon)
     }
 }
