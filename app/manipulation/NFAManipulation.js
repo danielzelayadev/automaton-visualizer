@@ -8,8 +8,8 @@ export default class NFAManipulation extends AutomatonManipulation {
         super(automaton, data)
 
         $('.opt.nfa').show()
-        $('#convert-btn').off('click')
-        $('#convert-btn').click(e => this.toDFA())
+        $('#todfa-btn').off('click')
+        $('#todfa-btn').click(e => this.toDFA())
         $('#epsilon-toggle').change(this.onEpsilonToggleChange.bind(this))
     }
     editEdge(nodeData, cb) {
