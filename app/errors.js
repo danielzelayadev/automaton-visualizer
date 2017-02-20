@@ -33,3 +33,9 @@ export class DuplicateTransitionError extends Error {
         super(`A transition from state '${from}' with char '${a}' to state '${to}' already exists.`)
     }
 }
+
+export class NoFinalStatesError extends Error {
+    constructor() {
+        super('No final states have been defined.')
+    }
+}
