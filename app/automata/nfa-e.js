@@ -1,5 +1,6 @@
 import NFA from './nfa'
 import { epsilon } from '../constants'
+import evaluateExpression from '../core/expression-eval'
 
 export default class NFAe extends NFA  {
     charInAlphabet (a) {
@@ -44,5 +45,11 @@ export default class NFAe extends NFA  {
             eStates = [ ...eStates, ...this.geteclosure(s.name) ]
         
         return eStates
+    }
+    buildFromExpressionTree(tree) {
+        const aut = evaluateExpression(tree)
+        aut.setInitialState(aut.states[0].name)
+        aut.addFinal(aut.states[aut.states.length - 1].name)
+        this.setFromAutomaton(aut)
     }
 }

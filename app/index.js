@@ -1,5 +1,4 @@
 import options from './options'
-import { getSetFromString } from './utils'
 import { getCurrentManipulation } from './manipulation'
 
 const nodes = new vis.DataSet([])
@@ -11,7 +10,7 @@ const testStr  = $('input[name="testStr"]')
 
 const alphabetPromptText = 'Please enter alphabet string: '
 
-let currentVisualizer = 'DFA'
+let currentVisualizer = 'NFA'
 
 select.material_select()
 select.change(onVisualizerChange)
@@ -24,7 +23,7 @@ function start(alphabetStr) {
     if (!alphabetStr)
         return
 
-    const alphabet = getSetFromString(alphabetStr)
+    const alphabet = [ ...new Set(alphabetStr.split('')) ]
 
     $('#alphabet .collection-item').remove()
 
