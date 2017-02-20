@@ -101,7 +101,7 @@ export default class NFA extends Automaton {
 		return dfa
 	}
 	joinStateNames(states) {
-		return states.reduce((accum, curr) => `${accum}${accum.length ? ',' : ''}${curr.name}`, "")
+		return states.sort().reduce((accum, curr) => `${accum}${accum.length ? ',' : ''}${curr.name}`, "")
 	}
 	hasFinalState(states) {
 		return states.reduce((accum, curr) => accum ? true : 
