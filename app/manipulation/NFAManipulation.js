@@ -2,6 +2,7 @@ import AutomatonManipulation from './AutomatonManipulation'
 import NFA from '../automata/nfa'
 import NFAe from '../automata/nfa-e'
 import { epsilon } from '../constants'
+import parser from '../core/regular-expression'
 
 export default class NFAManipulation extends AutomatonManipulation {
     constructor(automaton = null, data) {
@@ -10,7 +11,10 @@ export default class NFAManipulation extends AutomatonManipulation {
         $('.opt.nfa').show()
         $('#todfa-btn').off('click')
         $('#todfa-btn').click(e => this.toDFA())
+        $('#tonfae-btn').off('click')
+        $('#tonfae-btn').click(e => this.toNFAeClicked())
         $('#epsilon-toggle').change(this.onEpsilonToggleChange.bind(this))
+        $('input[name="regexStr"]').keypress(e => { if (e.which === 13) $('#tonfae-btn').click() })
     }
     editEdge(nodeData, cb) {
         const from     = this.nodes.get(nodeData.from).label
@@ -49,6 +53,23 @@ export default class NFAManipulation extends AutomatonManipulation {
         }
 
         this.buildFromAutomaton(dfa)
+    }
+    toNFAeClicked() {
+        if (!$('#epsilon-toggle').is(':checked'))
+            $('#epsilon-toggle').click()
+        
+        try {
+            this.toNFAe()
+        } catch (e) {
+            $('#epsilon-toggle').click()
+            alert(e.message)
+        }
+    }
+    toNFAe() {
+        const regex = $('input[name="regexStr"]').val()
+        const tree = parser.parse(regex)
+        this.automaton.buildFromExpressionTree(tree)
+        this.buildFromAutomaton(this.automaton)
     }
     onEpsilonToggleChange(e) {
         const { checked } = e.target
