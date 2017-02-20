@@ -164,6 +164,11 @@ export default class AutomatonManipulation {
             }
         
         this.automaton.setFromAutomaton(automaton)
+
+        $('#alphabet .collection-item').remove()
+
+        for (let a of this.automaton.alphabet)
+            $('#alphabet').append(`<li class="collection-item">${a}</li>`)
     }
     runAutomaton() {
         if (!this.automaton) return
