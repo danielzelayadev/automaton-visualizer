@@ -1,8 +1,7 @@
 import NFA from './nfa'
-import DFA from './dfa'
 import { epsilon } from '../constants'
 
-export default class NFAe extends NFA {
+export default class NFAe extends NFA  {
     charInAlphabet (a) {
         return a === epsilon ? true :
                this.alphabet.filter(e => e === a).length > 0        

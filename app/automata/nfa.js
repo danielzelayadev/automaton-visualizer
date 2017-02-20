@@ -1,4 +1,4 @@
-import Automaton, { State, Transition } from './automaton'
+import Automaton from './automaton'
 import DFA from './dfa'
 import { UnknownCharError, UnknownStateError, 
 	     DeterminismError, NoInitialStateError,
