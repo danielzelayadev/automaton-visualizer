@@ -13,6 +13,12 @@ export default class Automaton {
 			throw new UnknownStateError(name)
 		this.initialState = name
 	}
+	clear() {
+		this.states = []
+		this.alphabet = []
+		this.initialState = null
+		this.finalStates = []
+	}
 	clearInitialState() {
 		this.initialState = null
 	}
