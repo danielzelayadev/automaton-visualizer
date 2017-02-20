@@ -90,13 +90,29 @@ export default class Automaton {
 	}
 	setFromAutomaton(a) {
 		this.alphabet = [ ...a.alphabet ]
-		this.states = [...a.states]
+		this.states = this.getClonedStates(a.states)
         this.initialState = a.initialState
         this.finalStates = [...a.finalStates]
+	}
+	getClonedStates(states) {
+		return states.map(s => {
+			const newState = new State(s.name)
+			newState.transitions = s.transitions
+				.map(({ from, a, to }) => new Transition(from, a, to))
+			return newState
+		})
 	}
 	removeAllTransitionsWithChar(a) {
 		for (const s of this.states)
 			s.transitions = s.transitions.filter(t => t.a !== a)
+	}
+	getTransitionsTo(to) {
+		let transitions = []
+
+		for (const s of this.states)
+			transitions = [ ...transitions, ...s.transitions.filter(t => t.to === to) ]
+
+		return transitions
 	}
 	addTransition (from, a, to) {
 		const fs = this.getState(from)
