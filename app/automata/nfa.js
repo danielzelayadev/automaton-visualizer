@@ -101,10 +101,14 @@ export default class NFA extends Automaton {
 		return dfa
 	}
 	joinStateNames(states) {
-		return states.sort().reduce((accum, curr) => `${accum}${accum.length ? ',' : ''}${curr.name}`, "")
+		const stateNames = states.map(s => s.name)
+		return stateNames.sort().reduce((accum, curr) => `${accum}${accum.length ? ',' : ''}${curr}`, "")
 	}
 	hasFinalState(states) {
 		return states.reduce((accum, curr) => accum ? true : 
             this.stateIsFinal(curr.name), false)
+	}
+	toRegex() {
+		return this.toDFA().toRegex()
 	}
 }
