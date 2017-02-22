@@ -5,9 +5,6 @@ export default class DFAManipulation extends AutomatonManipulation {
         super(automaton, data)
 
         $('.opt.dfa').show()
-		$('#toregex-btn').off('click')
-        $('#toregex-btn').click(e => this.toRegex())
-        $('#regex-result').text('---')
     }
     editEdge(nodeData, cb) {
         const from     = this.nodes.get(nodeData.from).label
@@ -32,12 +29,5 @@ export default class DFAManipulation extends AutomatonManipulation {
         } else
             cb(null)
         console.log(this.automaton.states)
-    }
-    toRegex() {
-        try {
-            $('#regex-result').text(this.automaton.toRegex())
-        } catch (e) {
-            alert(e.message)
-        }
     }
 }

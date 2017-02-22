@@ -12,6 +12,9 @@ export default class AutomatonManipulation {
         
         $('#run-btn').off('click')
         $('#run-btn').click(e => this.runAutomaton())
+        $('#toregex-btn').off('click')
+        $('#toregex-btn').click(e => this.toRegex())
+        $('#regex-result').text('---')
 
         this.buildFromAutomaton(automaton)
     }
@@ -145,7 +148,6 @@ export default class AutomatonManipulation {
         for (const edge of edges)
             this.edges.remove(edge.id)
     }
-    // TODO: Update Alphabet Table
     buildFromAutomaton(automaton) {
         if (!automaton) return
         
@@ -174,6 +176,13 @@ export default class AutomatonManipulation {
         if (!this.automaton) return
         try {
             alert(this.automaton.run($('[name="testStr"]').val()) ? "Valid String!" : "Invalid String!")
+        } catch (e) {
+            alert(e.message)
+        }
+    }
+    toRegex() {
+        try {
+            $('#regex-result').text(this.automaton.toRegex())
         } catch (e) {
             alert(e.message)
         }
