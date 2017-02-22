@@ -13,8 +13,9 @@ export default class AutomatonManipulation {
         
         $('#run-btn').off('click').click(e => this.runAutomaton())
         $('#toregex-btn').off('click').click(e => this.toRegex())
-        $('#import-btn').off('click').click(e => this.import())
+        $('#import-btn').off('click').click(e => $('#import-file').click())
         $('#export-btn').off('click').click(e => this.export())
+        $('#import-file').off('change').change(e => this.import())
 
         $('#regex-result').text('---')
 
@@ -190,7 +191,19 @@ export default class AutomatonManipulation {
         }
     }
     import() {
-        $('#import-file').click()
+        upload($('#import-file').prop('files')[0], autData => {
+            const backup = { ...this.automaton }
+            try {
+                this.automaton.setFromAutomaton(JSON.parse(autData))
+                this.buildFromAutomaton(this.automaton)
+            } catch (e) {
+                alert(e.message)
+                this.automaton.setFromAutomaton(backup)
+                this.buildFromAutomaton(this.automaton)
+            }
+        })
+        
+        $('#import-file').val('')
     }
     export() {
         download('automaton.json', JSON.stringify(this.automaton), "data:application/json")
