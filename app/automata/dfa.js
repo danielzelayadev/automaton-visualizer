@@ -123,13 +123,17 @@ export default class DFA extends Automaton {
 				}
 
 				// console.log(`ABOUT TO REMOVE TRANSITION: From State: ${transTo.from} === Symbol: ${transTo.a}`)
-				clone.removeTransition(transTo.from, transTo.a)
+				clone.states = clone.states.map(e => {
+					if (e.name === transTo.from)
+						e.transitions = e.transitions.filter(t => !(t.a === transTo.a && t.to === transTo.to))
+					return e
+				})
 			}
 
-			clone.removeState(ns.name)
+			// clone.removeState(ns.name)
 			// i++
 		}
-		
+
 		return pipeTransitions(clone.states[0].transitions)[0].a
 	}
 }
