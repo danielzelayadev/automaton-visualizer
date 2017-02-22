@@ -1,6 +1,7 @@
 import Modal from '../core/modal'
 import { defaultShape, defaultColor, finalColor, initShape,
          stateFormUrl } from '../constants'
+import { upload, download } from '../core/io'
 
 export default class AutomatonManipulation {
     modal = new Modal('.modal')
@@ -10,10 +11,11 @@ export default class AutomatonManipulation {
         this.nodes = nodes
         this.edges = edges
         
-        $('#run-btn').off('click')
-        $('#run-btn').click(e => this.runAutomaton())
-        $('#toregex-btn').off('click')
-        $('#toregex-btn').click(e => this.toRegex())
+        $('#run-btn').off('click').click(e => this.runAutomaton())
+        $('#toregex-btn').off('click').click(e => this.toRegex())
+        $('#import-btn').off('click').click(e => this.import())
+        $('#export-btn').off('click').click(e => this.export())
+
         $('#regex-result').text('---')
 
         this.buildFromAutomaton(automaton)
@@ -186,5 +188,11 @@ export default class AutomatonManipulation {
         } catch (e) {
             alert(e.message)
         }
+    }
+    import() {
+        $('#import-file').click()
+    }
+    export() {
+        download('automaton.json', JSON.stringify(this.automaton), "data:application/json")
     }
 }
