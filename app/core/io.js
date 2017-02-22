@@ -1,5 +1,9 @@
-export function upload() {
-    
+export function upload(file, resolve = () => {}) {
+    if (!file) return
+
+    const reader = new FileReader()
+    reader.onload = e => resolve(reader.result)
+    reader.readAsText(file)
 }
 
 export function download(name, data, type) {
