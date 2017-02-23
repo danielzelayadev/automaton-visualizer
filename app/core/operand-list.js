@@ -37,6 +37,10 @@ export default class OperandList {
         this.operands = []
         this.ctr = 0
     }
+    getAutomatonAt(i) {
+        return i >= 0 && i < this.operands.length ? 
+               this.operands[i].automaton : null
+    }
     reduce(operation) {
         return this.operands.map(o => o.automaton).reduce(operation, null)
     }
