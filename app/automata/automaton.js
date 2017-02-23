@@ -139,6 +139,11 @@ export default class Automaton {
 			return e
 		})
 	}
+	stateHasTransitionWithChar(state, a) {
+		if (typeof state === String)
+			state = this.getState(state)
+		return state.transitions.filter(t => t.a === a).length > 0
+	}
 	editTransition(){}
 	removeTransition(){}
 	extraTransitionValidations(from, a, to){}
