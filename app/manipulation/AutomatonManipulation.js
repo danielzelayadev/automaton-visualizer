@@ -2,10 +2,12 @@ import Modal from '../core/modal'
 import { defaultShape, defaultColor, finalColor, initShape,
          stateFormUrl } from '../constants'
 import { upload, download } from '../core/io'
+import OperandList from '../core/operand-list'
 
 export default class AutomatonManipulation {
     modal = new Modal('.modal')
     initId = null
+    operandList = new OperandList('#operand-list')
     constructor(automaton = null, { nodes, edges }) {
         this.automaton = automaton
         this.nodes = nodes
@@ -16,6 +18,8 @@ export default class AutomatonManipulation {
         $('#import-btn').off('click').click(e => $('#import-file').click())
         $('#export-btn').off('click').click(e => this.export())
         $('#import-file').off('change').change(e => this.import())
+        $('#add-operand-btn').off('click').click(e => this.addOperand())
+        $('#clear-operands-btn').off('click').click(e => this.operandList.clear())
 
         $('#regex-result').text('---')
 
@@ -207,5 +211,17 @@ export default class AutomatonManipulation {
     }
     export() {
         download('automaton.json', JSON.stringify(this.automaton), "data:application/json")
+    }
+    cloneAutomaton(aut) {}
+    addOperand() {
+        const operandName = prompt('Please enter a name for the operand: ')
+        
+        if (!operandName) return
+
+        try {
+            this.operandList.addOperand(operandName, this.cloneAutomaton(this.automaton))
+        } catch (e) {
+            alert(e.message)
+        }
     }
 }
