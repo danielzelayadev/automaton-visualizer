@@ -1,11 +1,15 @@
 import NFA from '../automata/nfa'
 
 export function union(a, b) {
-    const aut = joinAutomata(a, b)
-    return aut
+    return joinAutomata(a, b, determineUnionFinalState)
 }
 
-function joinAutomata(a, b) {
+function determineUnionFinalState(stateA, stateB, autA, autB) {
+    return (stateA && autA.stateIsFinal(stateA.name)) || 
+           (stateB && autB.stateIsFinal(stateB.name))
+}
+
+function joinAutomata(a, b, determineFinal) {
     if (!a && !b) return
     if (!a) return b
     if (!b) return a
@@ -14,13 +18,13 @@ function joinAutomata(a, b) {
     const currStates = [ a.getState(a.initialState), b.getState(b.initialState) ]
     const initStateName = joinStateNames(currStates[0], currStates[1])
 
-    aut.addState(initStateName, false)
+    aut.addState(initStateName, determineFinal(...currStates, a, b))
     aut.setInitialState(initStateName)
 
-    return joinAut(aut, ...currStates, a, b)
+    return joinAut(aut, ...currStates, a, b, determineFinal)
 }
 
-function joinAut(aut, currStateA, currStateB, a, b) {
+function joinAut(aut, currStateA, currStateB, a, b, determineFinal) {
     for (const symbol of aut.alphabet) {
         const transitionsA = currStateA ? currStateA.transitions.filter(t => t.a === symbol) : []
         const transitionsB = currStateB ? currStateB.transitions.filter(t => t.a === symbol) : []
@@ -33,8 +37,8 @@ function joinAut(aut, currStateA, currStateB, a, b) {
         const stateName = joinStateNames(toStateA, toStateB)
 
         if (!aut.stateExists(stateName)) {
-            aut.addState(stateName, false)
-            aut = joinAut(aut, toStateA, toStateB, a, b)
+            aut.addState(stateName, determineFinal(toStateA, toStateB, a, b))
+            aut = joinAut(aut, toStateA, toStateB, a, b, determineFinal)
         }
 
         aut.addTransition(joinStateNames(currStateA, currStateB), symbol, stateName)
