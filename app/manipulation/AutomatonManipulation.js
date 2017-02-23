@@ -3,7 +3,7 @@ import { defaultShape, defaultColor, finalColor, initShape,
          stateFormUrl } from '../constants'
 import { upload, download } from '../core/io'
 import OperandList from '../core/operand-list'
-import { union, intersection } from '../core/operations'
+import { union, intersection, complement } from '../core/operations'
 
 export default class AutomatonManipulation {
     modal = new Modal('.modal')
@@ -23,6 +23,7 @@ export default class AutomatonManipulation {
         $('#clear-operands-btn').off('click').click(e => this.operandList.clear())
         $('#union-btn').off('click').click(e => this.buildFromAutomaton(this.operandList.reduce(union)))
         $('#intersection-btn').off('click').click(e => this.buildFromAutomaton(this.operandList.reduce(intersection)))
+        $('#complement-btn').off('click').click(e => this.buildFromAutomaton(complement(this.cloneAutomaton(this.automaton))))
 
         $('#regex-result').text('---')
 
