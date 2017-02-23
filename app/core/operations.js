@@ -4,8 +4,17 @@ export function union(a, b) {
     return joinAutomata(a, b, determineUnionFinalState)
 }
 
+export function intersection(a, b) {
+    return joinAutomata(a, b, determineIntersectionFinalState)
+}
+
 function determineUnionFinalState(stateA, stateB, autA, autB) {
     return (stateA && autA.stateIsFinal(stateA.name)) || 
+           (stateB && autB.stateIsFinal(stateB.name))
+}
+
+function determineIntersectionFinalState(stateA, stateB, autA, autB) {
+    return (stateA && autA.stateIsFinal(stateA.name)) &&
            (stateB && autB.stateIsFinal(stateB.name))
 }
 
