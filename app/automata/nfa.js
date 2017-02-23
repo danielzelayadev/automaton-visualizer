@@ -116,4 +116,7 @@ export default class NFA extends Automaton {
 		a.setFromAutomaton(this)
 		return a
 	}
+	minimize() {
+		return this.toDFA().minimize()
+	}
 }

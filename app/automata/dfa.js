@@ -141,4 +141,7 @@ export default class DFA extends Automaton {
 		a.setFromAutomaton(this)
 		return a
 	}
+	minimize() {
+		
+	}
 }

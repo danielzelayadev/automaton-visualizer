@@ -145,6 +145,7 @@ export default class Automaton {
 		return state.transitions.filter(t => t.a === a).length > 0
 	}
 	clone(){}
+	minimize(){}
 	editTransition(){}
 	removeTransition(){}
 	extraTransitionValidations(from, a, to){}
