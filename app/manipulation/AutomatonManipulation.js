@@ -15,6 +15,7 @@ export default class AutomatonManipulation {
         this.edges = edges
         
         $('#run-btn').off('click').click(e => this.runAutomaton())
+        $('#minimize-btn').off('click').click(e => this.minimize())
         $('#toregex-btn').off('click').click(e => this.toRegex())
         $('#import-btn').off('click').click(e => $('#import-file').click())
         $('#export-btn').off('click').click(e => this.export())
@@ -225,6 +226,13 @@ export default class AutomatonManipulation {
             this.operandList.addOperand(operandName, this.automaton.toDFA ? 
             this.automaton.toDFA() : this.automaton.clone())
         } catch (e) {
+            alert(e.message)
+        }
+    }
+    minimize() {
+        try {
+            this.buildFromAutomaton(this.automaton.minimize())
+        } catch(e) {
             alert(e.message)
         }
     }
