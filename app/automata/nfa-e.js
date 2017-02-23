@@ -52,4 +52,9 @@ export default class NFAe extends NFA  {
         aut.addFinal(aut.states[aut.states.length - 1].name)
         this.setFromAutomaton(aut)
     }
+    clone() {
+        const a = new NFAe([])
+        a.setFromAutomaton(this)
+        return a
+    }
 }

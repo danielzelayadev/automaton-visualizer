@@ -82,9 +82,4 @@ export default class NFAManipulation extends AutomatonManipulation {
         if (!checked)
             this.removeAllTransitionsWithChar(epsilon)
     }
-    cloneAutomaton(aut) {
-        const a = $('#epsilon-toggle').is(':checked') ?  new NFAe([]) : new NFA([])
-        a.setFromAutomaton(aut)
-        return a
-    }
 }

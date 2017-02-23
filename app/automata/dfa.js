@@ -136,4 +136,9 @@ export default class DFA extends Automaton {
 
 		return pipeTransitions(clone.states[0].transitions)[0].a
 	}
+	clone() {
+		const a = new DFA([])
+		a.setFromAutomaton(this)
+		return a
+	}
 }

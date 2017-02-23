@@ -111,4 +111,9 @@ export default class NFA extends Automaton {
 	toRegex() {
 		return this.toDFA().toRegex()
 	}
+	clone() {
+		const a = new NFA([])
+		a.setFromAutomaton(this)
+		return a
+	}
 }

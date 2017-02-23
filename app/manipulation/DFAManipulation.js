@@ -31,9 +31,4 @@ export default class DFAManipulation extends AutomatonManipulation {
             cb(null)
         console.log(this.automaton.states)
     }
-    cloneAutomaton(aut) {
-        const a = new DFA([])
-        a.setFromAutomaton(aut)
-        return a
-    }
 }

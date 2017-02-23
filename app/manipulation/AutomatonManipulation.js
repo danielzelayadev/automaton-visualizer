@@ -23,7 +23,7 @@ export default class AutomatonManipulation {
         $('#clear-operands-btn').off('click').click(e => this.operandList.clear())
         $('#union-btn').off('click').click(e => this.buildFromAutomaton(this.operandList.reduce(union)))
         $('#intersection-btn').off('click').click(e => this.buildFromAutomaton(this.operandList.reduce(intersection)))
-        $('#complement-btn').off('click').click(e => this.buildFromAutomaton(complement(this.cloneAutomaton(this.automaton))))
+        $('#complement-btn').off('click').click(e => this.buildFromAutomaton(complement(this.automaton)))
 
         $('#regex-result').text('---')
 
@@ -216,7 +216,6 @@ export default class AutomatonManipulation {
     export() {
         download('automaton.json', JSON.stringify(this.automaton), "data:application/json")
     }
-    cloneAutomaton(aut) {}
     addOperand() {
         const operandName = prompt('Please enter a name for the operand: ')
         
@@ -224,7 +223,7 @@ export default class AutomatonManipulation {
 
         try {
             this.operandList.addOperand(operandName, this.automaton.toDFA ? 
-            this.automaton.toDFA() : this.cloneAutomaton(this.automaton))
+            this.automaton.toDFA() : this.automaton.clone())
         } catch (e) {
             alert(e.message)
         }
