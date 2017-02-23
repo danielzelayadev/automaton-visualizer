@@ -28,13 +28,16 @@ export default class OperandList {
         const li = e.currentTarget.closest('li')
         const id = li.id
 
-        this.operands = this.operands.filter(o => o.id !== id)
-
+        this.operands = this.operands.filter(o => o.id != id)
+        
         li.remove()
     }
     clear() {
         $(`${this.selector} .collection-item`).remove()
         this.operands = []
         this.ctr = 0
+    }
+    reduce(operation) {
+        return this.operands.map(o => o.automaton).reduce(operation, null)
     }
 }

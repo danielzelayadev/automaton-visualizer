@@ -3,6 +3,7 @@ import { defaultShape, defaultColor, finalColor, initShape,
          stateFormUrl } from '../constants'
 import { upload, download } from '../core/io'
 import OperandList from '../core/operand-list'
+import { union } from '../core/operations'
 
 export default class AutomatonManipulation {
     modal = new Modal('.modal')
@@ -20,6 +21,7 @@ export default class AutomatonManipulation {
         $('#import-file').off('change').change(e => this.import())
         $('#add-operand-btn').off('click').click(e => this.addOperand())
         $('#clear-operands-btn').off('click').click(e => this.operandList.clear())
+        $('#union-btn').off('click').click(e => this.buildFromAutomaton(this.operandList.reduce(union)))
 
         $('#regex-result').text('---')
 
@@ -219,7 +221,8 @@ export default class AutomatonManipulation {
         if (!operandName) return
 
         try {
-            this.operandList.addOperand(operandName, this.cloneAutomaton(this.automaton))
+            this.operandList.addOperand(operandName, this.automaton.toDFA ? 
+            this.automaton.toDFA() : this.cloneAutomaton(this.automaton))
         } catch (e) {
             alert(e.message)
         }
