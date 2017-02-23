@@ -1,11 +1,38 @@
 import NFA from '../automata/nfa'
 
+const sumi = 'SUMIDERO'
+
 export function union(a, b) {
     return joinAutomata(a, b, determineUnionFinalState)
 }
 
 export function intersection(a, b) {
     return joinAutomata(a, b, determineIntersectionFinalState)
+}
+
+export function complement(aut) {
+    if (!aut) return
+
+    if (aut.getState(sumi))
+        aut.removeState(sumi)
+
+    aut.states.map(s => {
+        if (aut.stateIsFinal(s.name))
+            aut.removeFinal(s.name)
+        else {
+            aut.addFinal(s.name)
+
+            const missingChars = aut.alphabet
+                .filter(a => !aut.stateHasTransitionWithChar(s, a))
+
+            if (!aut.getState(sumi))
+                createSumi(aut)
+
+            missingChars.map(c => aut.addTransition(s.name, c, sumi))
+        }
+    })
+
+    return aut
 }
 
 function determineUnionFinalState(stateA, stateB, autA, autB) {
@@ -60,4 +87,9 @@ function joinStateNames(stateA, stateB) {
     const A = stateA ? `${stateA.name}(A)` : ''
     const B = stateB ? `${stateB.name}(B)` : ''
     return `{ ${A}${A.length && B.length ? ',' : ''}${B} }`
+}
+
+function createSumi(aut) {
+    aut.addState(sumi, true)
+    aut.alphabet.map(a => aut.addTransition(sumi, a, sumi))
 }
