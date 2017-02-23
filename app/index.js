@@ -25,11 +25,6 @@ function start(alphabetStr) {
 
     const alphabet = [ ...new Set(alphabetStr.split('')) ]
 
-    // $('#alphabet .collection-item').remove()
-
-    // for (let a of alphabet)
-    //     $('#alphabet').append(`<li class="collection-item">${a}</li>`)
-
     $('.opt').hide()
 
     $('#title').text(currentVisualizer)
