@@ -12,7 +12,7 @@ function evaluate (exp) {
     if (exp.name === 'pipe')
         return evalPipe(exp)
     if (exp.name === 'concat')
-        return evalConcant(exp)
+        return evalConcat(exp)
     if (exp.name === 'kleene')
         return evalKleene(exp)
     if (exp.name === 'character')
@@ -41,7 +41,7 @@ function evalPipe(exp) {
     return aut
 }
 
-function evalConcant(exp) {
+function evalConcat(exp) {
     const aut = new NFAe([])
 
     const left  = evaluate(exp.left)
