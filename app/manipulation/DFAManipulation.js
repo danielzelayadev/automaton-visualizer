@@ -1,4 +1,5 @@
 import AutomatonManipulation from './AutomatonManipulation'
+import DFA from '../automata/dfa'
 
 export default class DFAManipulation extends AutomatonManipulation {
     constructor(automaton, data) {
@@ -29,5 +30,10 @@ export default class DFAManipulation extends AutomatonManipulation {
         } else
             cb(null)
         console.log(this.automaton.states)
+    }
+    cloneAutomaton(aut) {
+        const a = new DFA([])
+        a.setFromAutomaton(this.automaton)
+        return a
     }
 }
