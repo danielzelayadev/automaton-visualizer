@@ -33,7 +33,7 @@ export default class DFAManipulation extends AutomatonManipulation {
     }
     cloneAutomaton(aut) {
         const a = new DFA([])
-        a.setFromAutomaton(this.automaton)
+        a.setFromAutomaton(aut)
         return a
     }
 }

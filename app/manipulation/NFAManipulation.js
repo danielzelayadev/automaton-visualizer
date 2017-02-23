@@ -84,7 +84,7 @@ export default class NFAManipulation extends AutomatonManipulation {
     }
     cloneAutomaton(aut) {
         const a = $('#epsilon-toggle').is(':checked') ?  new NFAe([]) : new NFA([])
-        a.setFromAutomaton(this.automaton)
+        a.setFromAutomaton(aut)
         return a
     }
 }
