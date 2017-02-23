@@ -44,10 +44,29 @@
 				</ul>
 			</div>
 			<div class="row">
+				<ul class="collection col s8 offset-s2 collection with-header" id="operand-list">
+					<li class="collection-header"><h5>Operands</h5></li>
+				</ul>
+				<a class="col s4 offset-s2 waves-effect waves-light btn" id="add-operand-btn">Add</a>
+				<a class="col s4 waves-effect waves-light btn" style="margin-left: 1px;" id="clear-operands-btn">Clear</a>
+			</div>
+			<div class="row">
+				<a class="col s8 offset-s2 waves-effect waves-light btn" id="union-btn">Union</a>
+			</div>
+			<div class="row">
+				<a class="col s8 offset-s2 waves-effect waves-light btn" id="intersection-btn">Intersection</a>
+			</div>
+			<div class="row">
+				<a class="col s8 offset-s2 waves-effect waves-light btn" id="complement-btn">Complement</a>
+			</div>
+			<div class="row">
 				<ul class="collection col s8 offset-s2 collection with-header">
 					<li class="collection-header"><h5>Regex Result</h5></li>
 					<li class="collection-item center-align" id="regex-result"></li>
 				</ul>
+			</div>
+			<div class="row">
+				<a class="col s8 offset-s2 waves-effect waves-light btn" id="toregex-btn">Convert to Regex</a>
 			</div>
 			<div class="row opt nfa">
 				<div class="input-field col s8 offset-s2">
@@ -67,9 +86,6 @@
 			</div>
 			<div class="row opt nfa">
 				<a class="col s8 offset-s2 waves-effect waves-light btn" id="todfa-btn">Convert to DFA</a>
-			</div>
-			<div class="row">
-				<a class="col s8 offset-s2 waves-effect waves-light btn" id="toregex-btn">Convert to Regex</a>
 			</div>
 			<div class="row">
 				<a class="col s8 offset-s2 waves-effect waves-light btn" id="import-btn">Import</a>
