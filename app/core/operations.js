@@ -13,6 +13,8 @@ export function intersection(a, b) {
 export function complement(aut) {
     if (!aut) return
 
+    aut = aut.clone()
+
     if (aut.getState(sumi))
         aut.removeState(sumi)
 
