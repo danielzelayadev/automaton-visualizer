@@ -4,14 +4,14 @@ body {
 
 #app {
     width: 50%;
-    height: 650px;
+    height: 100vh;
     border: 1px solid lightgray;
     float: left;
 }
 
 #controller {
     width: 50%;
-    height: 650px;
+    height: 100vh;
     float: right;
     overflow-x: hidden;
     overflow-y: auto;
