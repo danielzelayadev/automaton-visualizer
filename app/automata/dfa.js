@@ -1,8 +1,9 @@
-import Automaton, { Transition } from './automaton'
+import Automaton, { State, Transition } from './automaton'
 import { UnknownCharError, UnknownStateError, 
 	     DeterminismError, NoInitialStateError,
 		 DuplicateStateError, NoFinalStatesError } from '../errors'
 import { pipeTransitions, recursiveTransitionsFirst } from './utils'
+import { minimize } from '../core/minimization'
 import { epsilon } from '../constants'
 
 export default class DFA extends Automaton {
@@ -142,6 +143,7 @@ export default class DFA extends Automaton {
 		return a
 	}
 	minimize() {
-		
+		return minimize(this)
 	}
+	
 }
