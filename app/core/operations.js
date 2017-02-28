@@ -15,23 +15,22 @@ export function complement(aut) {
 
     aut = aut.clone()
 
-    if (aut.getState(sumi))
+    if (aut.stateExists(sumi))
         aut.removeState(sumi)
 
     aut.states.map(s => {
         if (aut.stateIsFinal(s.name))
             aut.removeFinal(s.name)
-        else {
+        else
             aut.addFinal(s.name)
-
-            const missingChars = aut.alphabet
+        
+        const missingChars = aut.alphabet
                 .filter(a => !aut.stateHasTransitionWithChar(s, a))
 
-            if (!aut.getState(sumi))
-                createSumi(aut)
+        if (missingChars.length > 0 && !aut.stateExists(sumi))
+            createSumi(aut)
 
-            missingChars.map(c => aut.addTransition(s.name, c, sumi))
-        }
+        missingChars.map(c => aut.addTransition(s.name, c, sumi))
     })
 
     return aut
