@@ -144,6 +144,18 @@ export default class Automaton {
 			state = this.getState(state)
 		return state.transitions.filter(t => t.a === a).length > 0
 	}
+	getFinalStates() {
+		return this.states.filter(s => this.stateIsFinal(s.name))
+	}
+	getNormalStates() {
+		return this.states.filter(s => !this.stateIsInitial(s.name) && !this.stateIsFinal(s.name))
+	}
+	getNonFinalStates() {
+		return this.states.filter(s => !this.stateIsFinal(s.name))
+	}
+	getInitialState() {
+		return this.getState(this.initialState)
+	}
 	clone(){}
 	minimize(){}
 	editTransition(){}
