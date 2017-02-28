@@ -7,22 +7,25 @@ export function minimize(aut) {
 
     const minTable = createMinimizationTable()
     let entries = Object.keys(minTable)
+    let oldEntryLength = entries.length
 
-    fillTable(minTable, entries)
+    while (true) {
+        fillTable(minTable, entries)
 
-    console.log(minTable)
+        console.log(minTable)
 
-    entries = entries.filter(entry => 
-        Object.values(minTable[entry]).filter(v => v === null).length > 0)
+        entries = entries.filter(entry => 
+            Object.values(minTable[entry]).filter(v => v === null).length > 0)
 
-    fillTable(minTable, entries)
-    
-    console.log(minTable)
+        if (!entries.length)
+            break
+        if (oldEntryLength === entries.length) {
+            fillTable(minTable, entries, true)
+            break
+        }
 
-    entries = entries.filter(entry => 
-        Object.values(minTable[entry]).filter(v => v === null).length > 0)
-
-    fillTable(minTable, entries, true)
+        oldEntryLength = entries.length
+    }
 
     console.log(minTable)
 
