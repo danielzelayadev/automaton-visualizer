@@ -39,3 +39,9 @@ export class NoFinalStatesError extends Error {
         super('No final states have been defined.')
     }
 }
+
+export class InvalidPDATransition extends Error {
+    constructor(str) {
+        super(`Invalid transition symbol '${str}'.`)
+    }
+}
