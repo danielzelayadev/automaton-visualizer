@@ -10,7 +10,12 @@ export default m => ({
         }
     },
     physics: {
-        enabled: true
+        enabled: true,
+        solver: 'forceAtlas2Based',
+        forceAtlas2Based: {
+            avoidOverlap: 1,
+            springLength: 100
+        }
     },
     interaction: {
         hover: true
