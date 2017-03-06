@@ -37,10 +37,19 @@ export default class Automaton {
 		this.states = this.states.map(e => {
 			if (e.name === oldName)
 				e.name = newName
+
+			e.transitions = e.transitions.map(t => {
+				if (t.from === oldName)
+					t.from = newName
+				if (t.to === oldName)
+					t.to = newName
+				return t
+			})
+
 			return e
 		})
 
-		this.finalStates.map(s => {
+		this.finalStates = this.finalStates.map(s => {
 			if (s === oldName)
 				return newName
 			return s
