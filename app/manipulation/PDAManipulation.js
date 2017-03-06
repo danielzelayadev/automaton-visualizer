@@ -1,12 +1,10 @@
-import AutomatonManipulation from './AutomatonManipulation'
+import NFAManipulation from './NFAManipulation'
 import PDA from '../automata/pda'
 
-export default class PDAManipulation extends AutomatonManipulation {
+export default class PDAManipulation extends NFAManipulation {
     constructor(automaton, data) {
         super(automaton, data)
 
         $('.opt').hide()
     }
-    editEdge(nodeData, cb) {}
-    deleteEdge(nodeData, cb) {}
 }
