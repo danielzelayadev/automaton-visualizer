@@ -13,6 +13,8 @@ export default class AutomatonManipulation {
         this.automaton = automaton
         this.nodes = nodes
         this.edges = edges
+
+        $('.opt.gen').show()
         
         $('#run-btn').off('click').click(e => this.runAutomaton())
         $('#minimize-btn').off('click').click(e => this.minimize())
