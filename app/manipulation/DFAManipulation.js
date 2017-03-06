@@ -19,7 +19,7 @@ export default class DFAManipulation extends AutomatonManipulation {
             alert(e.message)
             cb(null)
         }
-        console.log(this.automaton.states)
+        this.updateJSONView()
     }
     deleteEdge(nodeData, cb) {
         if (confirm('Are you sure you want to delete this edge?')) {
@@ -29,6 +29,6 @@ export default class DFAManipulation extends AutomatonManipulation {
             cb(nodeData)
         } else
             cb(null)
-        console.log(this.automaton.states)
+        this.updateJSONView()
     }
 }
