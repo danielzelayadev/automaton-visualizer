@@ -42,7 +42,7 @@ export default class AutomatonManipulation {
                 alert(e.message)
                 cb(null)
             } finally {
-                console.log(this.automaton)
+                this.updateJSONView()
             }
         })
     }
@@ -67,7 +67,7 @@ export default class AutomatonManipulation {
                 alert(e.message)
                 cb(null)
             } finally {
-                console.log(this.automaton)
+                this.updateJSONView()
             }
         }, () => { cb(null) })
     }
@@ -99,7 +99,7 @@ export default class AutomatonManipulation {
             cb(nodeData)
         } else
             cb(null)
-        console.log(this.automaton)
+        this.updateJSONView()
     }
     addEdge(nodeData, cb) {
         try {
@@ -118,7 +118,7 @@ export default class AutomatonManipulation {
         } catch (e) {
             alert(e.message)
         }
-        console.log(this.automaton.states)
+        this.updateJSONView()
     }
     updateStateNode(id, name, makeInitial, isFinal) {
         const nodeData = { id, label: name, shape: defaultShape }
@@ -183,6 +183,8 @@ export default class AutomatonManipulation {
 
         for (let a of this.automaton.alphabet)
             $('#alphabet').append(`<li class="collection-item">${a}</li>`)
+
+        this.updateJSONView()
     }
     runAutomaton() {
         if (!this.automaton) return
@@ -235,5 +237,8 @@ export default class AutomatonManipulation {
         } catch(e) {
             alert(e.message)
         }
+    }
+    updateJSONView() {
+        $('#json-renderer').jsonViewer(this.automaton, { collapsed: false })
     }
 }
