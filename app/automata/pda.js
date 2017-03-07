@@ -10,7 +10,7 @@ export default class PDA extends NFAe {
         const fs   = this.getState(from)
 		const ts   = this.getState(to)
         const data = this.parseTransitionData(a)
-        console.log(data)
+
 		if (!fs)
 			throw new UnknownStateError(from)
 		if (!ts)
@@ -19,7 +19,7 @@ export default class PDA extends NFAe {
 			throw new UnknownCharError(data.input)
         if (this.stateHasTransition(from, a, to))
             throw new DuplicateTransitionError({ from, a, to })
-        if (data.action === 'push')
+        if (data.push)
             data.pushValues.map(pv => {
                 if (pv !== stackConst && !this.charInAlphabet(pv))
                     throw new UnknownCharError(pv)
@@ -52,7 +52,6 @@ export default class PDA extends NFAe {
             const newSnaps = snap.state.transitions
                 .filter(t => this.transitionMatches(t.a, symbol, snap.stack))
                     .map(t => this.newSnap(t.to, snap, t.a))
-            console.log(newSnaps)
             return [ ...accum, ...newSnaps ]
         }, [])
 
