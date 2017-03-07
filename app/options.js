@@ -11,10 +11,9 @@ export default m => ({
     },
     physics: {
         enabled: true,
-        solver: 'forceAtlas2Based',
-        forceAtlas2Based: {
-            avoidOverlap: 1,
-            springLength: 100
+        solver: 'repulsion',
+        repulsion: {
+            springLength: 140
         }
     },
     interaction: {
