@@ -6,30 +6,10 @@ import { UnknownCharError, UnknownStateError,
          NoInitialStateError } from '../errors'
 
 export default class PDA extends NFAe {
-    addTransition(from, a, to) {
-        const fs   = this.getState(from)
-		const ts   = this.getState(to)
-        const data = this.parseTransitionData(a)
-
-		if (!fs)
-			throw new UnknownStateError(from)
-		if (!ts)
-			throw new UnknownStateError(to)
-		if (!this.charInAlphabet(data.input))
-			throw new UnknownCharError(data.input)
-        if (this.stateHasTransition(from, a, to))
-            throw new DuplicateTransitionError({ from, a, to })
-        if (data.push)
-            data.pushValues.map(pv => {
-                if (pv !== stackConst && !this.charInAlphabet(pv))
-                    throw new UnknownCharError(pv)
-            })
-
-		this.states = this.states.map(e => {
-			if (e.name === from)
-				e.transitions = [ ...e.transitions, new Transition(from, a, to) ]
-			return e
-		})
+    charInAlphabet(a) {
+        const { input } = this.parseTransitionData(a)
+        return input === epsilon ? true :
+               this.alphabet.filter(e => e === input).length > 0 
     }
     parseTransitionData(str) {
         const [ first, last ] = str.split('/')
