@@ -23,9 +23,7 @@ export default class PDA extends NFAe {
         return { input, popValue, pushValues, push }
     }
     getInitRunSnaps(w) {
-        const initSnap = { state: this.getInitialState(), w, stack: [ stackConst ] }
-        const epsilonSnaps = this.getSnapsFor([initSnap], epsilon)
-        return [ initSnap, ...epsilonSnaps ]
+        return this.getESnapClosure({ state: this.getInitialState(), stack: [ stackConst ] })
     }
     getSnapsFor(snaps, symbol) {
         let toSnaps = snaps.reduce((accum, snap) => {
@@ -65,22 +63,29 @@ export default class PDA extends NFAe {
         return this.getETransitions(snap).map(t => this.newSnap(t.to, snap, t.a))
     }
     getESnapClosure(snap) {
-        return [ snap, ...this.getesnapclosure(snap) ]
+        return this.getesnapclosure(snap, [snap])
     }
-    getesnapclosure(snap) {
+    getesnapclosure(snap, readySnaps) {
         let eSnaps = this.getESnaps(snap)
 
         for (const s of eSnaps)
-            eSnaps = [ ...eSnaps, ...this.getesnapclosure(s) ]
+            if (!this.snapIncluded(readySnaps, s))
+                readySnaps = [ ...readySnaps, ...this.getesnapclosure(s, [ ...readySnaps, s ]) ]
         
-        return eSnaps
+        return [ ...new Set(readySnaps) ]
     }
     newSnap(stateName, oldSnap, a) {
         return {
             state: this.getState(stateName),
-            w: oldSnap.w.substr(1),
             stack: this.modStack(oldSnap.stack, a)
         }
+    }
+    snapEquals(snapA, snapB) {
+        return snapA.state.name === snapB.state.name && 
+               snapA.stack[snapA.length - 1] === snapB.stack[snapB.length - 1]
+    }
+    snapIncluded(snapList, snap) {
+        return snapList.filter(s => this.snapEquals(s, snap)).length > 0
     }
     run(w) {
         if (!this.initialState)
