@@ -75,7 +75,7 @@ export default class PDA extends NFAe {
     }
     transitionMatches(a, symbol, stack) {
         const data = this.parseTransitionData(a)
-        return data.input === symbol && data.popValue === stack[stack.length - 1]
+        return data.input === symbol && (data.popValue === epsilon || data.popValue === stack[stack.length - 1])
     }
     getETransitions(snap) {
         return snap.state.transitions
