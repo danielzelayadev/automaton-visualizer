@@ -82,7 +82,15 @@ export default class PDA extends NFAe {
     }
     snapEquals(snapA, snapB) {
         return snapA.state.name === snapB.state.name && 
-               snapA.stack[snapA.stack.length - 1] === snapB.stack[snapB.stack.length - 1]
+               this.stackEquals(snapA.stack, snapB.stack)
+    }
+    stackEquals(stackA, stackB) {
+        if (stackA.length !== stackB.length)
+            return false
+        for (let i = 0; i < stackA.length; i++)
+            if (stackA[i] !== stackB[i])
+                return false
+        return true
     }
     snapIncluded(snapList, snap) {
         return snapList.filter(s => this.snapEquals(s, snap)).length > 0
