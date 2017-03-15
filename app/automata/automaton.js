@@ -1,4 +1,4 @@
-import { UnknownStateError, DuplicateStateError } from '../errors'
+import { UnknownCharError, UnknownStateError, DuplicateStateError } from '../errors'
 
 export default class Automaton {
 	states = []
