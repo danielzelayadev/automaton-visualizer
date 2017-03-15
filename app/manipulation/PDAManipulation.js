@@ -1,7 +1,7 @@
 import NFAManipulation from './NFAManipulation'
 import PDA from '../automata/pda'
 import { upload } from '../core/io'
-import { cfg2pda } from '../core/cfg-to-dfa'
+import { cfg2pda } from '../core/cfg-to-pda'
 
 export default class PDAManipulation extends NFAManipulation {
     constructor(automaton, data) {
