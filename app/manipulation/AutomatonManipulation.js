@@ -194,6 +194,7 @@ export default class AutomatonManipulation {
             alert(this.automaton.run($('[name="testStr"]').val()) ? "Valid String!" : "Invalid String!")
         } catch (e) {
             alert(e.message)
+            console.error(e.stack)
         }
     }
     toRegex() {
