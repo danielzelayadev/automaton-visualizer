@@ -2,7 +2,7 @@ import { Transition } from './automaton'
 import NFAe from './nfa-e'
 import { epsilon, stackConst } from '../constants'
 import { UnknownCharError, UnknownStateError, 
-         DuplicateTransitionError, InvalidPDATransition,
+         DuplicateTransitionError, InvalidTransition,
          NoInitialStateError } from '../errors'
 
 export default class PDA extends NFAe {
@@ -18,7 +18,7 @@ export default class PDA extends NFAe {
         const push = pushValues.indexOf(epsilon) < 0
 
         if (!input || !popValue || !pushValues)
-            throw new InvalidPDATransition(str)
+            throw new InvalidTransition(str)
 
         return { input, popValue, pushValues, push }
     }

@@ -40,7 +40,7 @@ export class NoFinalStatesError extends Error {
     }
 }
 
-export class InvalidPDATransition extends Error {
+export class InvalidTransition extends Error {
     constructor(str) {
         super(`Invalid transition symbol '${str}'.`)
     }
