@@ -10,7 +10,7 @@ const testStr  = $('input[name="testStr"]')
 
 const alphabetPromptText = 'Please enter alphabet string: '
 
-let currentVisualizer = 'PDA'
+let currentVisualizer = 'DFA'
 
 select.material_select()
 select.change(onVisualizerChange)
