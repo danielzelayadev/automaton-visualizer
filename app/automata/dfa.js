@@ -10,7 +10,7 @@ export default class DFA extends Automaton {
 	removeTransition (from, a) {
 		this.states = this.states.map(e => {
 			if (e.name === from)
-				e.transitions = e.transitions.filter(t => t.a !== a)
+				e.transitions = e.transitions.filter(t => !this.transitionMatches(t.a, a))
 			return e
 		})
 	}
@@ -18,10 +18,10 @@ export default class DFA extends Automaton {
 		this.states = this.states.map(e => {
 			if (e.name === _from)
 				if (e.name !== from)
-					e.transitions = e.transitions.filter(t => t.a !== a)
+					e.transitions = e.transitions.filter(t => !this.transitionMatches(t.a, a))
 				else
 					e.transitions = e.transitions.map(t => { 
-						if (t.a === a) 
+						if (this.transitionMatches(t.a, a)) 
 							t.to = to 
 						return t
 					})
@@ -31,28 +31,39 @@ export default class DFA extends Automaton {
 		})
 	}
 	transitionIsDeterministic(from, a) {
-		return !from.transitions.filter(e => e.a === a)[0]
+		return !from.transitions.filter(e => this.transitionMatches(e.a, a))[0]
 	}
 	extraTransitionValidations (from, a, to) {
 		if (!this.transitionIsDeterministic(this.getState(from), a))
 			throw new DeterminismError(from, a)
 	}
+	transitionMatches(symbolA, symbolB) {
+		return symbolA === symbolB
+	}
+	nextStateFromTrans(t) {
+		return this.getState(t.to)
+	}
+	getNextState(currState, a) {
+		return currState.transitions
+			.filter(e => this.transitionMatches(e.a, a))
+				.map(this.nextStateFromTrans.bind(this))[0]
+	}
+	runInit(w){}
 	run (w) {
 		if (!this.initialState)
 			throw new NoInitialStateError()
 
 		let currState = this.getState(this.initialState)
 
-		for (let a of w) {
-			const t = currState.transitions.filter(e => e.a === a)[0]
+		this.runInit(w)
 
-			if (!t)
+		for (let a of w)
+			if (!currState)
 				return false
+			else
+				currState = this.getNextState(currState, a)
 
-			currState = this.states.filter(e => e.name === t.to)[0]
-		}
-
-		return this.stateIsFinal(currState.name)
+		return currState && this.stateIsFinal(currState.name)
 	}
 	toRegex() {
 		if (!this.initialState)
