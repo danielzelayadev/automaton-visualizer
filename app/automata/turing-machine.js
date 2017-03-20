@@ -4,8 +4,7 @@ import { InvalidTransition } from '../errors'
 
 export default class TuringMachine extends DFA {
     charInAlphabet(a) {
-        const { input } = this.parseTransitionData(a)
-        return this.alphabet.filter(e => e === input).length > 0 
+        return true
     }
     parseTransitionData(str) {
         const [ input, right ] = str.split('/')
@@ -26,9 +25,23 @@ export default class TuringMachine extends DFA {
         this.tape.update(replaceValue, moveDirection)
         return this.getState(t.to)
     }
-    runInit(w) {
-        this.tape = new Tape(w.split(''))
-    }
+    run (w) {
+		if (!this.initialState)
+			throw new NoInitialStateError()
+
+		let currState = this.getState(this.initialState)
+
+		this.tape = new Tape(w)
+
+        while (true) {
+            if (!currState)
+                return false
+            if (this.stateIsFinal(currState.name))
+                return true
+                
+            currState = this.getNextState(currState, this.tape.getCurr())
+        }
+	}
     clone() {
         const a = new TuringMachine([])
         a.setFromAutomaton(this)

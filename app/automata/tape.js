@@ -1,9 +1,9 @@
-export const RIGHT = 'R', LEFT = 'L', NONE = '.'
+export const RIGHT = 'R', LEFT = 'L', NONE = '.', BLANK = 'B'
 
 export default class Tape {
-    head = 0
-    constructor(contents) {
-        this.contents = contents
+    constructor(input) {
+        this.contents = [ BLANK, ...input.split(''), BLANK ]
+        this.head = this.contents.length > 2 ? 1 : 0
     }
     update(replaceValue, moveDirection) {
         this.contents[this.head] = replaceValue
@@ -22,5 +22,8 @@ export default class Tape {
             this.head = 0
         else if (this.head >= this.contents.length)
             this.head = this.contents.length - 1
+    }
+    getCurr() {
+        return this.contents[this.head]
     }
 }
