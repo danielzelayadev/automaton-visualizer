@@ -17,7 +17,7 @@ export function getCurrentManipulation (currentVisualizer, alphabet, data) {
             return new NFAManipulation(checked ? new NFAe(alphabet) : new NFA(alphabet), data)
         case 'PDA':
             return new PDAManipulation(new PDA(alphabet), data)
-        case 'TM':
+        case 'Turing Machine':
             return new TuringManipulation(new TuringMachine(alphabet), data)
     }
 
